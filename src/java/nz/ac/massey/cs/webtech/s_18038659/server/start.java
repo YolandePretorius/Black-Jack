@@ -31,9 +31,13 @@ public class start extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession(true);
-        session.setAttribute("card1", 2);
-        session.setAttribute("card2", 44);
+        HttpSession session = request.getSession();
+        GameSession gameState = new GameSession();
+        session.setAttribute("game", gameState);
+        gameState.setIsPlayersTurn(true);
+        
+//        session.setAttribute("card1", 2);
+//        session.setAttribute("card2", 44);
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -44,8 +48,8 @@ public class start extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
            out.println("<h1>Servlet start at " + session.getId() + "</h1>");
-           out.println("<h2>Card1 " + session.getAttribute("card1") + "</h2>");
-           out.println("<h2>Card2 " + session.getAttribute("card2") + "</h2>");
+//           out.println("<h2>Card1 " + session.getAttribute("card1") + "</h2>");
+//           out.println("<h2>Card2 " + session.getAttribute("card2") + "</h2>");
             out.println("</body>");
             out.println("</html>");
         }

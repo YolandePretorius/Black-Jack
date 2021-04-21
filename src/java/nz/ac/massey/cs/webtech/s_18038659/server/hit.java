@@ -32,6 +32,9 @@ public class hit extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
          HttpSession session = request.getSession();
+        Object obj = session.getAttribute("game");
+        GameSession gameState = (GameSession)obj;
+        gameState.setIsPlayersTurn(!(gameState.isPlayersTurn));
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -40,8 +43,10 @@ public class hit extends HttpServlet {
             out.println("<title>Servlet hit</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h2>Card1 " + session.getAttribute("card1") + "</h2>");
-            out.println("<h2>Card2 " + session.getAttribute("card2") + "</h2>");
+            out.println("<h1>Servlet hit at " + request.getContextPath() + "</h1>");
+            out.println("Game session player turn "+gameState.isPlayersTurn);
+//            out.println("<h2>Card1 " + session.getAttribute("card1") + "</h2>");
+//            out.println("<h2>Card2 " + session.getAttribute("card2") + "</h2>");
             out.println("<h1>Servlet hit at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");

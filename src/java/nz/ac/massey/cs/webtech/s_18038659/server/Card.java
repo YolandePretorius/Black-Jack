@@ -15,9 +15,10 @@ import java.util.List;
  * @author 18038659
  */
 public class Card {
-    private String faceName,suit;
+    private String faceName,suit,pictureName;
     private int faceValue;
-    private BufferedImage cardImage;
+    private byte cardImage;
+ 
     
     /**
      * 
@@ -26,7 +27,7 @@ public class Card {
      * @param faceValue = 2,3,4,5,6,7,8,9,10,11,12,13,14
      * @param cardImage 
      */
-    public Card(String faceName, String suit, int faceValue, BufferedImage cardImage) {
+    public Card(String faceName, String suit, int faceValue, byte cardImage) {
         this.faceName = faceName;
         this.suit = suit;
         this.faceValue = faceValue;
@@ -71,11 +72,11 @@ public class Card {
         this.faceValue = faceValue;
     }
 
-    public BufferedImage getCardImage() {
+    public byte getCardImage() {
         return cardImage;
     }
 
-    public void setCardImage(BufferedImage cardImage) {
+    public void setCardImage(byte cardImage) {
         this.cardImage = cardImage;
     }
     
