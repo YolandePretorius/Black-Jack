@@ -35,6 +35,13 @@ public class start extends HttpServlet {
         GameSession gameState = new GameSession();
         session.setAttribute("game", gameState);
         gameState.setIsPlayersTurn(true);
+        GameLogic gamelogic = new GameLogic();
+        
+        gamelogic.setInitialGameState(gameState);
+        
+        gameState.setDeck(gamelogic.deckCards);
+        gameState.setPlayerCards(gamelogic.playerCards);
+        gameState.setDealerCards(gamelogic.dealerCards);
         
 //        session.setAttribute("card1", 2);
 //        session.setAttribute("card2", 44);
@@ -48,6 +55,18 @@ public class start extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
            out.println("<h1>Servlet start at " + session.getId() + "</h1>");
+            //out.println("<h1>Deck of card"+gameState.toString()+"</h1>");
+             for (Card card : gameState.getPlayerCards()) {
+                 out.println("<h1>Player Cards "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+             }
+             for (Card card : gameState.getDealerCards()) {
+                 out.println("<h1>Dealer Cards "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+             }
+             out.println();
+            for (Card card : gameState.Deck) {
+                //out.println("<h1>Deck of card"+ card.getFaceName()+"</h1>");
+                 out.println("<h1>Deck of card"+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+            }
 //           out.println("<h2>Card1 " + session.getAttribute("card1") + "</h2>");
 //           out.println("<h2>Card2 " + session.getAttribute("card2") + "</h2>");
             out.println("</body>");
