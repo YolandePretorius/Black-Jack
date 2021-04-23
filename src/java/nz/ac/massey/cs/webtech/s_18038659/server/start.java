@@ -7,6 +7,8 @@ package nz.ac.massey.cs.webtech.s_18038659.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,10 +31,12 @@ public class start extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
+       
         GameSession gameState = new GameSession();
+        
         session.setAttribute("game", gameState);
         gameState.setIsPlayersTurn(true);
         GameLogic gamelogic = new GameLogic();
@@ -43,8 +47,24 @@ public class start extends HttpServlet {
         gameState.setPlayerCards(gamelogic.playerCards);
         gameState.setDealerCards(gamelogic.dealerCards);
         
+//        request.setAttribute("Player Cards", gameState.getPlayerCards());
+//        
+//        if (gameState.isPlayersTurn) {
+//                List<Card> card = gameState.getDealerCards();
+//                request.setAttribute("Dealer card", card.get(0));
+////                out.println("<h1>Dealer Card1: "+ card.get(0).getFaceName()+" "+ card.get(0).getSuit()+"</h1>");
+////                out.print("<h1>Dealer Card2, back of card<h1>");
+//            } else {
+//                request.setAttribute("Dealer cards", gameState.getDealerCards());
+////                 out.println("<h1>Dealer Cards "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+//             }
+        
+//        response.sendRedirect("/")
+// 
+//        requestDispatcher.forward(request, response);
 //        session.setAttribute("card1", 2);
 //        session.setAttribute("card2", 44);
+
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -54,19 +74,25 @@ public class start extends HttpServlet {
             out.println("<title>Start</title>");            
             out.println("</head>");
             out.println("<body>");
-           out.println("<h1>Servlet start at " + session.getId() + "</h1>");
-            //out.println("<h1>Deck of card"+gameState.toString()+"</h1>");
-             for (Card card : gameState.getPlayerCards()) {
-                 out.println("<h1>Player Cards "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
-             }
-             for (Card card : gameState.getDealerCards()) {
+           //out.println("<h1>Servlet start at " + session.getId() + "</h1>");
+            out.println("<h1>Start game</h1>");
+            for (Card card : gameState.getPlayerCards()) {
+                 out.println("<h1>Player Card"+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+            }
+            if (gameState.isPlayersTurn) {
+                List<Card> card = gameState.getDealerCards();
+                out.println("<h1>Dealer Card1: "+ card.get(0).getFaceName()+" "+ card.get(0).getSuit()+"</h1>");
+                out.print("<h1>Dealer Card2, back of card<h1>");
+            } else {
+                for (Card card : gameState.getDealerCards()) {
                  out.println("<h1>Dealer Cards "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
              }
              out.println();
-            for (Card card : gameState.Deck) {
-                //out.println("<h1>Deck of card"+ card.getFaceName()+"</h1>");
-                 out.println("<h1>Deck of card"+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
             }
+//            for (Card card : gameState.Deck) {
+//                //out.println("<h1>Deck of card"+ card.getFaceName()+"</h1>");
+//                 out.println("<h1>Deck of card"+ card.getCardImage()+"</h1>");
+//            }
 //           out.println("<h2>Card1 " + session.getAttribute("card1") + "</h2>");
 //           out.println("<h2>Card2 " + session.getAttribute("card2") + "</h2>");
             out.println("</body>");

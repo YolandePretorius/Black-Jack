@@ -55,6 +55,10 @@ public class GameSession {
     public String toString() {
         return "GameSession{" + "playerCards=" + playerCards + ", dealerCards=" + dealerCards + ", isPlayersTurn=" + isPlayersTurn + ", Deck=" + Deck + '}';
     }
+
+    List<Card> setPlayerCards() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
  
 
     

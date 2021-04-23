@@ -5,6 +5,7 @@
  */
 package nz.ac.massey.cs.webtech.s_18038659.server;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,23 +28,25 @@ public class GameLogic {
     List<Card> deckCards = new ArrayList<>();
     List<Card>playerCards = new ArrayList<>();
     List<Card>dealerCards = new ArrayList<>();
+    int numberGamesPlayed = 0;
 
-   void setInitialGameState(GameSession gameState) {   
-       getDeckOfCards();
+   void setInitialGameState(GameSession gameState) throws IOException {   
+       createDeckOfCards();
        playerCards.add(DrawCard());
        playerCards.add(DrawCard());
        dealerCards.add(DrawCard());
        dealerCards.add(DrawCard());
+       numberOfGames();
    }
 
-    public void getDeckOfCards(){
+    public void createDeckOfCards() throws IOException{
         for (Integer cardFace : listFace) {
             for (String cardSuit : listSuit) {
                 Card newCard = new Card();
                 newCard.setFaceName(cardFace.toString());
                 newCard.setSuit(cardSuit);
                 newCard.setFaceValue(cardFace);
-                
+//                newCard.setPictureName(cardFace.toString()+ cardSuit+".png");
                 //newCard.setCardImage(cardFace.toString() + cardSuit + "png");
                 
                 deckCards.add(newCard);
@@ -69,6 +72,30 @@ public class GameLogic {
                 deckCards.add(newCard);
             }
    }
+    
+    public void setDeckOfCards(List<Card> sessionDeckOfCards){
+        this.deckCards = sessionDeckOfCards;
+    }
+    
+    public List<Card> getDeckOfCards(){
+    return this.deckCards;
+    }
+    
+    public void setPlayerCards(List<Card> sessionPlayersCards){
+        this.playerCards = sessionPlayersCards;
+    }
+    
+    public List<Card> getPlayerCards(){
+        return this.playerCards;
+    }
+    
+    void playerGetsCard(){
+        playerCards.add(DrawCard());
+    }
+    
+    void dealerGetCard(){
+        dealerCards.add(DrawCard());
+    }
 
     private Card DrawCard() {
         Random rand = new Random();
@@ -76,6 +103,15 @@ public class GameLogic {
         deckCards.remove(card);
         return card;
     }
+
+    private void numberOfGames() {
+        this.numberGamesPlayed++;
+    }
+    
+    private void keepScore(){
+ 
+    }
+    
 
 }
 

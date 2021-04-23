@@ -14,7 +14,7 @@
 <jsp:useBean id="user" scope="session" class="nz.ac.massey.cs.webtech.s_18038659.server.Card"/>
     <body>
         <h1>Hello form index</h1>
-        <form action ="Hello" method = "post">
+        <form action ="start" method = "post">
             <p> Name: <input type ="text" name="name"/>
             </p>
             <p>

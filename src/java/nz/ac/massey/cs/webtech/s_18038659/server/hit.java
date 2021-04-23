@@ -34,7 +34,18 @@ public class hit extends HttpServlet {
          HttpSession session = request.getSession();
         Object obj = session.getAttribute("game");
         GameSession gameState = (GameSession)obj;
-        gameState.setIsPlayersTurn(!(gameState.isPlayersTurn));
+        //gameState.setIsPlayersTurn(!(gameState.isPlayersTurn));
+        
+        GameLogic gamelogic = new GameLogic();
+        gamelogic.setDeckOfCards(gameState.getDeck());
+        gamelogic.setPlayerCards(gameState.getPlayerCards());
+        
+        if (gameState.isPlayersTurn){
+            gamelogic.playerGetsCard();
+            gameState.setDeck(gamelogic.getDeckOfCards());
+            gameState.setPlayerCards(gamelogic.getPlayerCards());
+             
+        }
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -45,7 +56,10 @@ public class hit extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Servlet hit at " + request.getContextPath() + "</h1>");
             out.println("Game session player turn "+gameState.isPlayersTurn);
-//            out.println("<h2>Card1 " + session.getAttribute("card1") + "</h2>");
+             for (Card card : gameState.getPlayerCards()) {
+                 out.println("<h1>Player Card"+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+            }
+            //out.println("<h2>Cards " + session.getAttribute("card1") + "</h2>");
 //            out.println("<h2>Card2 " + session.getAttribute("card2") + "</h2>");
             out.println("<h1>Servlet hit at " + request.getContextPath() + "</h1>");
             out.println("</body>");
