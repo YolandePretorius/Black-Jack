@@ -27,6 +27,7 @@ public class GameLogic {
     List<Card>dealerCards = new ArrayList<>();
     int numberGamesPlayed = 0;
     int totalPlayerScore = 0;
+    int totalDealerScore = 0;
 
    void setInitialGameState(GameSession gameState) throws IOException {   
        createDeckOfCards();
@@ -35,7 +36,6 @@ public class GameLogic {
        dealerCards.add(DrawCard());
        dealerCards.add(DrawCard());
        setnumberOfGames();
-       keepPlayerScore();
        
    }
 
@@ -80,6 +80,16 @@ public class GameLogic {
     public List<Card> getDeckOfCards(){
     return this.deckCards;
     }
+
+    public List<Card> getDealerCards() {
+        return dealerCards;
+    }
+
+    public void setDealerCards(List<Card> dealerCards) {
+        this.dealerCards = dealerCards;
+    }
+    
+    
     
     public void setPlayerCards(List<Card> sessionPlayersCards){
         this.playerCards = sessionPlayersCards;
@@ -101,7 +111,6 @@ public class GameLogic {
         Random rand = new Random();
         Card card = deckCards.get(rand.nextInt(deckCards.size()));
         deckCards.remove(card);
-        //keepPlayerScore();
         return card;
     }
 
@@ -112,13 +121,30 @@ public class GameLogic {
     public int getnumberOfGames() {
         return this.numberGamesPlayed;
     }
+
+    public void setTotalPlayerScore(int totalPlayerScore) {
+        this.totalPlayerScore = totalPlayerScore;
+    }
+
     
     
-    public int keepPlayerScore(){
-        for (Card playerCard : this.playerCards) {
-            this.totalPlayerScore = totalPlayerScore + playerCard.getFaceValue();
-            
+     
+    
+    public int getTotalScore(List<Card>cards){
+        for (Card playerCard : cards) {
+            if(playerCard.getFaceValue() != 11){
+                this.totalPlayerScore = totalPlayerScore + playerCard.getFaceValue();
+            }
         }
+        for (Card playerCard : cards) {
+            if((playerCard.getFaceValue() == 11) && (this.totalPlayerScore > 10)){
+                this.totalPlayerScore = totalPlayerScore + 1;
+            }
+            if((playerCard.getFaceValue() == 11) && (this.totalPlayerScore <= 10)){
+                this.totalPlayerScore = totalPlayerScore + 11;
+            }
+        }
+        
         return this.totalPlayerScore; 
     }
     

@@ -47,7 +47,7 @@ public class start extends HttpServlet {
         gameState.setPlayerCards(gamelogic.playerCards);
         gameState.setDealerCards(gamelogic.dealerCards);
         gameState.setNumberGamesPlayed(gamelogic.numberGamesPlayed);
-        gameState.setScorePlayerGame(gamelogic.totalPlayerScore); // score of players cards
+        gameState.setScorePlayerGame(gamelogic.getTotalScore(gamelogic.getPlayerCards())); // score of players cards
         
         
         //connect to index---------------------------------------------------------

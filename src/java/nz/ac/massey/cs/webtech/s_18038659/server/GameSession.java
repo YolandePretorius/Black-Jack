@@ -19,6 +19,7 @@ public class GameSession {
     List<Card> Deck = new ArrayList<>();
     int numberGamesPlayed;
     int scorePlayerGame;
+    int scoreDealerGame;
 
     public int getScorePlayerGame() {
         return scorePlayerGame;
@@ -63,6 +64,16 @@ public class GameSession {
     public void setDeck(List<Card> Deck) {
         this.Deck = Deck;
     }
+
+    public int getScoreDealerGame() {
+        return scoreDealerGame;
+    }
+
+    public void setScoreDealerGame(int scoreDealerGame) {
+        this.scoreDealerGame = scoreDealerGame;
+    }
+    
+    
     
     @Override
     public String toString() {

@@ -7,16 +7,20 @@ package nz.ac.massey.cs.webtech.s_18038659.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author 18038659
  */
-public class Hello extends HttpServlet {
+@WebServlet(name = "stand", urlPatterns = {"/jack/move/stand"})
+public class stand extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,15 +34,45 @@ public class Hello extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        HttpSession session = request.getSession();
+        Object obj = session.getAttribute("game");
+        GameSession gameState = (GameSession)obj;
+        
+        gameState.setIsPlayersTurn(!(gameState.isPlayersTurn)); //change to computer to deal cards
+        
+        GameLogic gamelogic = new GameLogic();
+        gamelogic.setDeckOfCards(gameState.getDeck());
+        gamelogic.setPlayerCards(gameState.getPlayerCards());
+        gamelogic.setDealerCards(gameState.getDealerCards());
+        //gameState.setScorePlayerGame(gamelogic.getTotalScore(gamelogic.getPlayerCards()));
+        gameState.setScoreDealerGame(gamelogic.getTotalScore(gamelogic.getDealerCards()));
+        
+        if(gameState.getScoreDealerGame() < 17){
+            gamelogic.dealerGetCard();
+            gameState.setDealerCards(gamelogic.getDealerCards());
+            gameState.setDeck(gamelogic.getDeckOfCards());
+        }
+        
+        
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Hello</title>");
+            out.println("<title>Servlet stand</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Hello at " + request.getContextPath() + "</h1>");
+            
+            for (Card card : gameState.getPlayerCards()) {
+                 out.println("<h1>Player Card: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+            }
+
+            for (Card card : gameState.getDealerCards()) {
+                out.println("<h1>Dealer Cards: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+                }
+            out.println("<h1>Player card total: " +gameState.getScorePlayerGame()+"</h1>");
+            out.println("<h1>Dealer card total: " +gameState.getScoreDealerGame()+"</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,16 +90,7 @@ public class Hello extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String name = request.getParameter("name");
-        if (name!= null){
-                response.getWriter().printf("Hello %s",name);
-            }else{
-            response.getWriter().write("Please enter name");
-        }
-        
-        
         processRequest(request, response);
-        
     }
 
     /**
@@ -79,13 +104,6 @@ public class Hello extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String name = request.getParameter("name");
-        if (name!= null & name !=""){
-                response.getWriter().printf("Hello %s",name);
-            }else{
-            response.sendRedirect("Index.jsp");
-        }
-        
         processRequest(request, response);
     }
 

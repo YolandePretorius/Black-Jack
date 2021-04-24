@@ -40,15 +40,34 @@ public class hit extends HttpServlet {
         GameLogic gamelogic = new GameLogic();
         gamelogic.setDeckOfCards(gameState.getDeck());
         gamelogic.setPlayerCards(gameState.getPlayerCards());
+        //gamelogic.setTotalPlayerScore(gamelogic.getTotalPlayerScore());
         
-        if (gameState.isPlayersTurn){
+//        if(gameState.getScorePlayerGame() > 21){
+//            throw new ServletException("PLAYER LOOSES");  
+//        }else{
+//            gamelogic.playerGetsCard();
+//            gameState.setDeck(gamelogic.getDeckOfCards());
+//            gameState.setPlayerCards(gamelogic.getPlayerCards());
+//            gameState.setScorePlayerGame(gamelogic.getTotalPlayerScore(gamelogic.getPlayerCards())); // score of players cards
+//            
+//        }
+//        
+        
+//        if(gameState.getScorePlayerGame() == 21){
+//            gameState.setIsPlayersTurn(!gameState.isPlayersTurn);
+//        }
+        
+       if (gameState.isPlayersTurn){
             gamelogic.playerGetsCard();
             gameState.setDeck(gamelogic.getDeckOfCards());
             gameState.setPlayerCards(gamelogic.getPlayerCards());
-            gameState.setScorePlayerGame(gamelogic.totalPlayerScore); // score of players cards
-            
-             
+            gameState.setScorePlayerGame(gamelogic.getTotalScore(gamelogic.getPlayerCards())); // score of players cards
         }
+       
+       if(gameState.getScorePlayerGame() > 21){
+            throw new ServletException("PLAYER LOOSES");  
+        }
+        
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -66,15 +85,16 @@ public class hit extends HttpServlet {
              if (gameState.isPlayersTurn) {
                 List<Card> card = gameState.getDealerCards();
                 out.println("<h1>Dealer Card: "+ card.get(0).getFaceName()+" "+ card.get(0).getSuit()+"</h1>");
-                out.print("<h1>Dealer Card, back of card<h1>");
-            } else {
-                for (Card card : gameState.getDealerCards()) {
-                 out.println("<h1>Dealer Cards: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
-                }
-              }
+                out.print("<h1>Dealer Card, back of card</h1>");
+            } 
+//            else {
+//                for (Card card : gameState.getDealerCards()) {
+//                 out.println("<h1>Dealer Cards: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+//                }
+//              }
             //out.println("<h2>Cards " + session.getAttribute("card1") + "</h2>");
 //            out.println("<h2>Card2 " + session.getAttribute("card2") + "</h2>");
-            out.println("Player card total: " +gameState.getScorePlayerGame());
+            out.println("<h1>Player card total: " +gameState.getScorePlayerGame()+"</h1>");
             out.println("</body>");
             out.println("</html>");
         }
