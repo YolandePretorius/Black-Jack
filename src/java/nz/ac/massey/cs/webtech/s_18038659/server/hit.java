@@ -7,6 +7,7 @@ package nz.ac.massey.cs.webtech.s_18038659.server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -44,6 +45,8 @@ public class hit extends HttpServlet {
             gamelogic.playerGetsCard();
             gameState.setDeck(gamelogic.getDeckOfCards());
             gameState.setPlayerCards(gamelogic.getPlayerCards());
+            gameState.setScorePlayerGame(gamelogic.totalPlayerScore); // score of players cards
+            
              
         }
         try (PrintWriter out = response.getWriter()) {
@@ -54,14 +57,24 @@ public class hit extends HttpServlet {
             out.println("<title>Servlet hit</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet hit at " + request.getContextPath() + "</h1>");
+ 
             out.println("Game session player turn "+gameState.isPlayersTurn);
              for (Card card : gameState.getPlayerCards()) {
-                 out.println("<h1>Player Card"+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+                 out.println("<h1>Player Card: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
             }
+             
+             if (gameState.isPlayersTurn) {
+                List<Card> card = gameState.getDealerCards();
+                out.println("<h1>Dealer Card: "+ card.get(0).getFaceName()+" "+ card.get(0).getSuit()+"</h1>");
+                out.print("<h1>Dealer Card, back of card<h1>");
+            } else {
+                for (Card card : gameState.getDealerCards()) {
+                 out.println("<h1>Dealer Cards: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+                }
+              }
             //out.println("<h2>Cards " + session.getAttribute("card1") + "</h2>");
 //            out.println("<h2>Card2 " + session.getAttribute("card2") + "</h2>");
-            out.println("<h1>Servlet hit at " + request.getContextPath() + "</h1>");
+            out.println("Player card total: " +gameState.getScorePlayerGame());
             out.println("</body>");
             out.println("</html>");
         }

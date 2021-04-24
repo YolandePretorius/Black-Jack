@@ -19,16 +19,14 @@ import java.util.Random;
      * @param cardImage 
      */
 public class GameLogic {
-    
-  
-
     List<Integer> listFace = Arrays.asList(2,3,4,5,6,7,8,9,10);
-    List<String> listFace2 = Arrays.asList("j","q","k");
-    List<String> listSuit = Arrays.asList("d","h","c","s");
+    List<String> listFace2 = Arrays.asList("jack","queen","king");
+    List<String> listSuit = Arrays.asList("diamonds","hearts","clubs","spades");
     List<Card> deckCards = new ArrayList<>();
     List<Card>playerCards = new ArrayList<>();
     List<Card>dealerCards = new ArrayList<>();
     int numberGamesPlayed = 0;
+    int totalPlayerScore = 0;
 
    void setInitialGameState(GameSession gameState) throws IOException {   
        createDeckOfCards();
@@ -36,7 +34,9 @@ public class GameLogic {
        playerCards.add(DrawCard());
        dealerCards.add(DrawCard());
        dealerCards.add(DrawCard());
-       numberOfGames();
+       setnumberOfGames();
+       keepPlayerScore();
+       
    }
 
     public void createDeckOfCards() throws IOException{
@@ -66,7 +66,7 @@ public class GameLogic {
         }       
             for (String cardSuit : listSuit) {
                 Card newCard = new Card();
-                newCard.setFaceName("a");
+                newCard.setFaceName("ace");
                 newCard.setSuit(cardSuit);
                 newCard.setFaceValue(11);
                 deckCards.add(newCard);
@@ -101,15 +101,25 @@ public class GameLogic {
         Random rand = new Random();
         Card card = deckCards.get(rand.nextInt(deckCards.size()));
         deckCards.remove(card);
+        //keepPlayerScore();
         return card;
     }
 
-    private void numberOfGames() {
+    private void setnumberOfGames() {
         this.numberGamesPlayed++;
     }
     
-    private void keepScore(){
- 
+    public int getnumberOfGames() {
+        return this.numberGamesPlayed;
+    }
+    
+    
+    public int keepPlayerScore(){
+        for (Card playerCard : this.playerCards) {
+            this.totalPlayerScore = totalPlayerScore + playerCard.getFaceValue();
+            
+        }
+        return this.totalPlayerScore; 
     }
     
 

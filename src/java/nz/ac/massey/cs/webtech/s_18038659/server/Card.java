@@ -75,7 +75,7 @@ public class Card {
     
     public static List<String> getvalidFaceNames()
     {
-        return Arrays.asList("2","3","4","5","6","7","8","9","10","j","q","k","a");
+        return Arrays.asList("2","3","4","5","6","7","8","9","10","jack","queen","king","ace");
     }
 
     

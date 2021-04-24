@@ -18,6 +18,19 @@ public class GameSession {
     boolean isPlayersTurn;
     List<Card> Deck = new ArrayList<>();
     int numberGamesPlayed;
+    int scorePlayerGame;
+
+    public int getScorePlayerGame() {
+        return scorePlayerGame;
+    }
+
+    public void setScorePlayerGame(int scorePlayerGame) {
+        this.scorePlayerGame = scorePlayerGame;
+    }
+
+    public void setNumberGamesPlayed(int numberGamesPlayed) {
+        this.numberGamesPlayed = numberGamesPlayed;
+    }
 
     public List<Card> getPlayerCards() {
         return playerCards;
@@ -35,7 +48,7 @@ public class GameSession {
         this.dealerCards = dealerCards;
     }
 
-    public boolean isIsPlayersTurn() {
+    public boolean getIsPlayersTurn() {
         return isPlayersTurn;
     }
 
@@ -50,15 +63,13 @@ public class GameSession {
     public void setDeck(List<Card> Deck) {
         this.Deck = Deck;
     }
-
+    
     @Override
     public String toString() {
         return "GameSession{" + "playerCards=" + playerCards + ", dealerCards=" + dealerCards + ", isPlayersTurn=" + isPlayersTurn + ", Deck=" + Deck + '}';
     }
 
-    List<Card> setPlayerCards() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
  
 
     

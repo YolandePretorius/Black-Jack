@@ -46,6 +46,19 @@ public class start extends HttpServlet {
         gameState.setDeck(gamelogic.deckCards);
         gameState.setPlayerCards(gamelogic.playerCards);
         gameState.setDealerCards(gamelogic.dealerCards);
+        gameState.setNumberGamesPlayed(gamelogic.numberGamesPlayed);
+        gameState.setScorePlayerGame(gamelogic.totalPlayerScore); // score of players cards
+        
+        
+        //connect to index---------------------------------------------------------
+//        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jack/index.jsp");
+//        request.setAttribute("Gamestate",gameState);
+//        dispatcher.forward(request, response);
+        //----------------------------------------------------------------------------
+        
+        
+        
+//        response.sendRedirect("index.jsp");
         
 //        request.setAttribute("Player Cards", gameState.getPlayerCards());
 //        
@@ -77,18 +90,20 @@ public class start extends HttpServlet {
            //out.println("<h1>Servlet start at " + session.getId() + "</h1>");
             out.println("<h1>Start game</h1>");
             for (Card card : gameState.getPlayerCards()) {
-                 out.println("<h1>Player Card"+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+                 out.println("<h1>Player Card: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
             }
             if (gameState.isPlayersTurn) {
                 List<Card> card = gameState.getDealerCards();
-                out.println("<h1>Dealer Card1: "+ card.get(0).getFaceName()+" "+ card.get(0).getSuit()+"</h1>");
-                out.print("<h1>Dealer Card2, back of card<h1>");
+                out.println("<h1>Dealer Card: "+ card.get(0).getFaceName()+" "+ card.get(0).getSuit()+"</h1>");
+                out.print("<h1>Dealer Card, back of card<h1>");
             } else {
                 for (Card card : gameState.getDealerCards()) {
-                 out.println("<h1>Dealer Cards "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+                 out.println("<h1>Dealer Cards: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
              }
              out.println();
             }
+            out.println("Player card total: " +gameState.getScorePlayerGame());
+            
 //            for (Card card : gameState.Deck) {
 //                //out.println("<h1>Deck of card"+ card.getFaceName()+"</h1>");
 //                 out.println("<h1>Deck of card"+ card.getCardImage()+"</h1>");
@@ -126,9 +141,9 @@ public class start extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.getWriter().printf("Queen of hearts ");
-        response.getWriter().printf("Two of clubs");
-        processRequest(request, response);
+        response.sendRedirect("index.jsp");
+        
+    processRequest(request, response);
     }
 
     /**
