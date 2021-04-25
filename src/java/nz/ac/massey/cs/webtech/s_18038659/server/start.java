@@ -51,9 +51,9 @@ public class start extends HttpServlet {
         
         
         //connect to index---------------------------------------------------------
-//        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jack/index.jsp");
-//        request.setAttribute("Gamestate",gameState);
-//        dispatcher.forward(request, response);
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jack/index.jsp");
+        request.setAttribute("Gamestate",gameState);
+        dispatcher.forward(request, response);
         //----------------------------------------------------------------------------
         
         
@@ -91,6 +91,7 @@ public class start extends HttpServlet {
             out.println("<h1>Start game</h1>");
             for (Card card : gameState.getPlayerCards()) {
                  out.println("<h1>Player Card: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+                 out.println("<h1>Player Card: "+ card.getCardURL()+"</h1>");
             }
             if (gameState.isPlayersTurn) {
                 List<Card> card = gameState.getDealerCards();

@@ -20,15 +20,15 @@ public class Card {
     private String faceName,suit;
     private int faceValue;
     private BufferedImage cardImage;
-    public String pictureName;
-    //private String pictureName;
+    public String cardURL;
+    private String pictureName;
     //private Image image;
     
 //    backofCard = new cardImage("./game/back-blue_.png");
 
-    public void setPictureName(String pictureName) {
-        this.pictureName = pictureName;
-    }
+//    public void setPictureName(String pictureName) {
+//        this.pictureName = pictureName;
+//    }
  
     
     /**
@@ -50,8 +50,7 @@ public class Card {
         this.faceName = faceName;
         this.suit = suit;
         this.faceValue = faceValue;
-        //this.pictureName = (faceName+suit+".png");
-        this.cardImage = ImageIO.read(new File("./game/"+pictureName));
+        
                         
     /**
      *
@@ -107,15 +106,19 @@ public class Card {
     public void setFaceValue(int faceValue) {
         this.faceValue = faceValue;
     }
+    
+    
 
-    public BufferedImage getCardImage() {
-        return cardImage;
+//    public BufferedImage getCardImage() throws IOException {
+//        this.pictureName = (faceName+suit+".png");
+//        this.cardImage = ImageIO.read(new File("./game/"+pictureName));
+//        return this.cardImage;
+//    }
+
+    public String getCardURL() {
+        this.pictureName = (faceName+suit+".png");
+        return this.cardURL =("../game/"+pictureName);
     }
 
-    public void setCardImage() {
-        this.cardImage = cardImage;
-    }
-    
-    
-    
+      
 }
