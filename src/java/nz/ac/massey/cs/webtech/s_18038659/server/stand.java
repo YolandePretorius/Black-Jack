@@ -34,13 +34,12 @@ public class stand extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
         HttpSession session = request.getSession();
         Object obj = session.getAttribute("game");
         GameSession gameState = (GameSession)obj;
         
         gameState.setIsPlayersTurn(!(gameState.isPlayersTurn)); //change to computer to deal cards
-        
+        gameState.setUrl("../../");
         GameLogic gamelogic = new GameLogic();
         gamelogic.setDeckOfCards(gameState.getDeck());
         gamelogic.setPlayerCards(gameState.getPlayerCards());

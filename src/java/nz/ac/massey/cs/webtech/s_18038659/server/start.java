@@ -40,7 +40,7 @@ public class start extends HttpServlet {
         session.setAttribute("game", gameState);
         gameState.setIsPlayersTurn(true);
         GameLogic gamelogic = new GameLogic();
-        
+        gameState.setUrl("../");
         gamelogic.setInitialGameState(gameState);
         
         gameState.setDeck(gamelogic.deckCards);
@@ -51,7 +51,7 @@ public class start extends HttpServlet {
         
         
         //connect to index---------------------------------------------------------
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jack/index.jsp");
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
         request.setAttribute("Gamestate",gameState);
         dispatcher.forward(request, response);
         //----------------------------------------------------------------------------
@@ -89,21 +89,21 @@ public class start extends HttpServlet {
             out.println("<body>");
            //out.println("<h1>Servlet start at " + session.getId() + "</h1>");
             out.println("<h1>Start game</h1>");
-            for (Card card : gameState.getPlayerCards()) {
-                 out.println("<h1>Player Card: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
-                 out.println("<h1>Player Card: "+ card.getCardURL()+"</h1>");
-            }
-            if (gameState.isPlayersTurn) {
-                List<Card> card = gameState.getDealerCards();
-                out.println("<h1>Dealer Card: "+ card.get(0).getFaceName()+" "+ card.get(0).getSuit()+"</h1>");
-                out.print("<h1>Dealer Card, back of card<h1>");
-            } else {
-                for (Card card : gameState.getDealerCards()) {
-                 out.println("<h1>Dealer Cards: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
-             }
-             out.println();
-            }
-            out.println("Player card total: " +gameState.getScorePlayerGame());
+//            for (Card card : gameState.getPlayerCards()) {
+//                 out.println("<h1>Player Card: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+////                 out.println("<h1>Player Card: "+ card.getCardURL()+"</h1>");
+//            }
+//            if (gameState.isPlayersTurn) {
+//                List<Card> card = gameState.getDealerCards();
+//                out.println("<h1>Dealer Card: "+ card.get(0).getFaceName()+" "+ card.get(0).getSuit()+"</h1>");
+//                out.print("<h1>Dealer Card, back of card<h1>");
+//            } else {
+//                for (Card card : gameState.getDealerCards()) {
+//                 out.println("<h1>Dealer Cards: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+//             }
+//             out.println();
+//            }
+//            out.println("Player card total: " +gameState.getScorePlayerGame());
             
 //            for (Card card : gameState.Deck) {
 //                //out.println("<h1>Deck of card"+ card.getFaceName()+"</h1>");

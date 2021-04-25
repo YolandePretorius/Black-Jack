@@ -21,6 +21,16 @@ public class GameSession {
     int scorePlayerGame;
     int scoreDealerGame;
 
+    String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+    
     public int getScorePlayerGame() {
         return scorePlayerGame;
     }

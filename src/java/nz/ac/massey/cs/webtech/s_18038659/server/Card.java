@@ -114,10 +114,14 @@ public class Card {
 //        this.cardImage = ImageIO.read(new File("./game/"+pictureName));
 //        return this.cardImage;
 //    }
+    
+    public void setCardURL(String url){
+        
+    }
 
-    public String getCardURL() {
+    public String getCardURL(String url) {
         this.pictureName = (faceName+suit+".png");
-        return this.cardURL =("../game/"+pictureName);
+        return this.cardURL =(url +"game/"+pictureName);
     }
 
       

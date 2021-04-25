@@ -4,6 +4,7 @@
     Author     : 18038659
 --%>
 
+<%@page import="java.util.List"%>
 <%@page import="nz.ac.massey.cs.webtech.s_18038659.server.Card"%>
 <%@page import="nz.ac.massey.cs.webtech.s_18038659.server.GameSession"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -21,36 +22,44 @@
 <!--        <p>Players turn: <%= game.getDeck().size()%></p>-->
         <p>Player Cards</p>
         <%
-            for (Card card : game.getPlayerCards()) {
+        for (Card card : game.getPlayerCards()) {
         %>
         <%--<%= card.getFaceName() %> <%= card.getSuit()%>--%>
-        <img src="<%= card.getCardURL()%>" alt="card" ></a>
+        <img src="<%= card.getCardURL(game.getUrl())%>" alt="card" ></a>
             
       <%
       }
       %>
       
+      
       <p>Dealer Cards</p>
         <%
-            for (Card card : game.getDealerCards()) {
+        if (game.getIsPlayersTurn()) {
+            List<Card> cardList = game.getDealerCards(); %>
+            <img src="<%= cardList.get(0).getCardURL(game.getUrl()) %>" alt="card" ></a>
+            <img src="<%= game.getUrl()+"game/backOfCard.png" %>" alt="card" ></a>
+        <%
+            }else{
+                List<Card> cardList = game.getDealerCards();
+                for (Card card : cardList) {
         %>
         <%--<%= card.getFaceName() %> <%= card.getSuit()%>--%>
-        <img src="<%= card.getCardURL()%>" alt="card" ></a>
+            <img src="<%= card.getCardURL(game.getUrl()) %>" alt="card" ></a>
             
-      <%
-      }
-      %>
+        <%
+         }
+        %>
+      
+        <%
+         }
+        %>
         
-<!--      for (Card card : gameState.getPlayerCards()) {
-                 out.println("<h1>Player Card: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
-            }-->
     
-<!--        <form action ="start" method = "post">
-            <p> Name: <input type ="text" name="name"/>
-            </p>
+        <form action ="move/hit" method = "post">
             <p>
-         <input type="submit" value="Submit">
-            </p>-->
+            </p>
+         <input type="submit" value="Hit">
+        </form>
     <!--</form>-->
     
 
