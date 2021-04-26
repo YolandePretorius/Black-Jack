@@ -56,9 +56,10 @@
         
     
         <form action ="move/hit" method = "post">
-            <p>
-            </p>
-         <input type="submit" value="Hit">
+        <input type="submit" value="Hit">
+        </form>
+        <form action ="move/stand" method = "post">
+         <input type="submit" value="stand">
         </form>
     <!--</form>-->
     

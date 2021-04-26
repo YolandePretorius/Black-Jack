@@ -33,48 +33,62 @@ public class stand extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
+        
         Object obj = session.getAttribute("game");
         GameSession gameState = (GameSession)obj;
         
         gameState.setIsPlayersTurn(!(gameState.isPlayersTurn)); //change to computer to deal cards
-        gameState.setUrl("../../");
+        if(gameState.getScorePlayerGame() > 21){
+            throw new ServletException("PLAYER LOOSES,ITS A BUST");
+        }
+        
+        gameState.setUrl("../");
+        
         GameLogic gamelogic = new GameLogic();
+        
         gamelogic.setDeckOfCards(gameState.getDeck());
         gamelogic.setPlayerCards(gameState.getPlayerCards());
         gamelogic.setDealerCards(gameState.getDealerCards());
         //gameState.setScorePlayerGame(gamelogic.getTotalScore(gamelogic.getPlayerCards()));
-        gameState.setScoreDealerGame(gamelogic.getTotalScore(gamelogic.getDealerCards()));
+        gameState.setScoreDealerGame(gamelogic.getTotalDealerScore(gamelogic.getDealerCards()));
         
-        if(gameState.getScoreDealerGame() < 17){
+        while(gameState.getScoreDealerGame() < 17){
             gamelogic.dealerGetCard();
-            gameState.setDealerCards(gamelogic.getDealerCards());
-            gameState.setDeck(gamelogic.getDeckOfCards());
+            gameState.setScoreDealerGame(gamelogic.getTotalDealerScore(gamelogic.getDealerCards()));
         }
         
+        gameState.setDealerCards(gamelogic.getDealerCards());
+        gameState.setDeck(gamelogic.getDeckOfCards());
         
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet stand</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            
-            for (Card card : gameState.getPlayerCards()) {
-                 out.println("<h1>Player Card: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
-            }
-
-            for (Card card : gameState.getDealerCards()) {
-                out.println("<h1>Dealer Cards: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
-                }
-            out.println("<h1>Player card total: " +gameState.getScorePlayerGame()+"</h1>");
-            out.println("<h1>Dealer card total: " +gameState.getScoreDealerGame()+"</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        request.setAttribute("Gamestate",gameState);
+        response.sendRedirect(request.getContextPath()+"/jack/start");
+        
+        
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet stand</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//            
+//            for (Card card : gameState.getPlayerCards()) {
+//                 out.println("<h1>Player Card: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+//            }
+//
+//            for (Card card : gameState.getDealerCards()) {
+//                out.println("<h1>Dealer Cards: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
+//                }
+//            out.println("<h1>Player card total: " +gameState.getScorePlayerGame()+"</h1>");
+//            out.println("<h1>Dealer card total: " +gameState.getScoreDealerGame()+"</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

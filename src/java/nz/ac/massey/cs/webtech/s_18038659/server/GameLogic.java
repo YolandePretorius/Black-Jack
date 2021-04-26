@@ -28,6 +28,7 @@ public class GameLogic {
     int numberGamesPlayed = 0;
     int totalPlayerScore = 0;
     int totalDealerScore = 0;
+    boolean playerWinner = false;
 
    void setInitialGameState(GameSession gameState) throws IOException {   
        createDeckOfCards();
@@ -72,6 +73,15 @@ public class GameLogic {
                 deckCards.add(newCard);
             }
    }
+
+    public boolean isPlayerWinner(int dealerScore,int playerScore) {
+        if((playerScore <= 21)&&(playerScore > dealerScore)){
+            return !playerWinner;
+        }
+        return playerWinner;
+    }
+    
+    
     
     public void setDeckOfCards(List<Card> sessionDeckOfCards){
         this.deckCards = sessionDeckOfCards;
@@ -130,7 +140,7 @@ public class GameLogic {
     
      
     
-    public int getTotalScore(List<Card>cards){
+    public int getTotalPlayerScore(List<Card>cards){
         for (Card playerCard : cards) {
             if(playerCard.getFaceValue() != 11){
                 this.totalPlayerScore = totalPlayerScore + playerCard.getFaceValue();
@@ -148,6 +158,23 @@ public class GameLogic {
         return this.totalPlayerScore; 
     }
     
+    public int getTotalDealerScore(List<Card>cards){
+        for (Card dealerCard : cards) {
+            if(dealerCard.getFaceValue() != 11){
+                this.totalDealerScore = totalDealerScore + dealerCard.getFaceValue();
+            }
+        }
+        for (Card dealerCard : cards) {
+            if((dealerCard.getFaceValue() == 11) && (this.totalDealerScore > 10)){
+                this.totalDealerScore = totalDealerScore + 1;
+            }
+            if((dealerCard.getFaceValue() == 11) && (this.totalDealerScore <= 10)){
+                this.totalDealerScore = totalDealerScore + 11;
+            }
+        }
+        
+        return this.totalDealerScore; 
+    }
 
 }
 

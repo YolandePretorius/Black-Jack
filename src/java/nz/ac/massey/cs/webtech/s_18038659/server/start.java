@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,17 @@ import javax.servlet.http.HttpSession;
  * @author 18038659
  */
 public class start extends HttpServlet {
+    
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        
+    }
+    
+    /** Destroys the servlet.
+     */
+    public void destroy() {
+        
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,27 +45,50 @@ public class start extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-       
-        GameSession gameState = new GameSession();
+
+        HttpSession session = request.getSession(false);
+//        GameSession gameState = new GameSession();
+
         
-        session.setAttribute("game", gameState);
-        gameState.setIsPlayersTurn(true);
-        GameLogic gamelogic = new GameLogic();
-        gameState.setUrl("../");
-        gamelogic.setInitialGameState(gameState);
-        
-        gameState.setDeck(gamelogic.deckCards);
-        gameState.setPlayerCards(gamelogic.playerCards);
-        gameState.setDealerCards(gamelogic.dealerCards);
-        gameState.setNumberGamesPlayed(gamelogic.numberGamesPlayed);
-        gameState.setScorePlayerGame(gamelogic.getTotalScore(gamelogic.getPlayerCards())); // score of players cards
-        
+        if(session == null){
+            GameSession gameState = new GameSession();
+            session = request.getSession(true);
+            gameState.setIsPlayersTurn(true);
+            GameLogic gamelogic = new GameLogic();
+            gameState.setUrl("../");
+            gamelogic.setInitialGameState(gameState);
+
+            gameState.setDeck(gamelogic.deckCards);
+            gameState.setPlayerCards(gamelogic.playerCards);
+            gameState.setDealerCards(gamelogic.dealerCards);
+            gameState.setNumberGamesPlayed(gamelogic.numberGamesPlayed);
+            gameState.setScorePlayerGame(gamelogic.getTotalPlayerScore(gamelogic.getPlayerCards())); // score of players cards
+            
+            session.setAttribute("game", gameState);
+           
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jack/index.jsp");
+            request.setAttribute("Gamestate",gameState);
+            dispatcher.include(request, response);
+            
+        }else{
+            
+            Object obj = session.getAttribute("game");
+            GameSession gameState = (GameSession)obj;
+             request.setAttribute("Gamestate",gameState);
+             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jack/index.jsp");
+             dispatcher.include(request, response);
+        }
+//        }else{
+//            
+//        }
+//        GameSession gameState = new GameSession();
         
         //connect to index---------------------------------------------------------
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-        request.setAttribute("Gamestate",gameState);
-        dispatcher.forward(request, response);
+//        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+        //request.setAttribute("Gamestate",gameState);
+        //response.sendRedirect(request.getContextPath()+"/jack/start");
+       // String uri = response.encodeURL("ShoppingCart2");
+//        dispatcher.include(request, response);
         //----------------------------------------------------------------------------
         
         
@@ -78,17 +113,17 @@ public class start extends HttpServlet {
 //        session.setAttribute("card1", 2);
 //        session.setAttribute("card2", 44);
 
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("Start");
-            out.println("<title>Start</title>");            
-            out.println("</head>");
-            out.println("<body>");
-           //out.println("<h1>Servlet start at " + session.getId() + "</h1>");
-            out.println("<h1>Start game</h1>");
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("Start");
+//            out.println("<title>Start</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//           //out.println("<h1>Servlet start at " + session.getId() + "</h1>");
+//            out.println("<h1>Start game</h1>");
 //            for (Card card : gameState.getPlayerCards()) {
 //                 out.println("<h1>Player Card: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
 ////                 out.println("<h1>Player Card: "+ card.getCardURL()+"</h1>");
@@ -111,9 +146,9 @@ public class start extends HttpServlet {
 //            }
 //           out.println("<h2>Card1 " + session.getAttribute("card1") + "</h2>");
 //           out.println("<h2>Card2 " + session.getAttribute("card2") + "</h2>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
