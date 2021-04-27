@@ -20,6 +20,7 @@ public class GameSession {
     int numberGamesPlayed;
     int scorePlayerGame;
     int scoreDealerGame;
+    String winner;
 
     String url;
 
@@ -82,6 +83,15 @@ public class GameSession {
     public void setScoreDealerGame(int scoreDealerGame) {
         this.scoreDealerGame = scoreDealerGame;
     }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public void setWinner(String winner) {
+        this.winner = winner;
+    }
+    
     
     
     

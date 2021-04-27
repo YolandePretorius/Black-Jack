@@ -47,7 +47,12 @@ public class hit extends HttpServlet {
         
         response.setContentType("text/html;charset=UTF-8");
         
-         HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
+         
+        if(session == null){
+            throw new ServletException("404 Not Found");
+        }
+         
         Object obj = session.getAttribute("game");
         GameSession gameState = (GameSession)obj;
         //gameState.setIsPlayersTurn(!(gameState.isPlayersTurn));

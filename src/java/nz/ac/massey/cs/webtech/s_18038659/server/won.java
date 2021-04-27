@@ -18,8 +18,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author 18038659
  */
-@WebServlet(name = "state", urlPatterns = {"/jack/state"})
-public class state extends HttpServlet {
+@WebServlet(name = "won", urlPatterns = {"/jack/won"})
+public class won extends HttpServlet {
+    
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,8 +35,7 @@ public class state extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        
+             
         HttpSession session = request.getSession(false);
         
          if(session == null){
@@ -44,40 +45,56 @@ public class state extends HttpServlet {
         Object obj = session.getAttribute("game");
         GameSession gameState = (GameSession)obj;
         
-        int dealerscore = gameState.getScoreDealerGame();
-        gameState.setScoreDealerGame(dealerscore);
-        int playerscore = gameState.getScorePlayerGame();
-        gameState.setScorePlayerGame(playerscore);
+        int dealerScore = gameState.getScoreDealerGame();
+        int playerScore = gameState.getScorePlayerGame();
         
+        GameLogic gamelogic = new GameLogic();
         
-        request.setAttribute("Gamestate",gameState);
-        response.sendRedirect(request.getContextPath()+"/jack/won");
+        if(gameState.isPlayersTurn){
+          String winner = "none";
+          gameState.setWinner(winner);
+        }else{
+           String winner = gamelogic.getWinner(dealerScore, playerScore);
+           gameState.setWinner(winner);
+        }
+        
+        if(!"none".equals(gameState.getWinner())){
+            //session.invalidate();
+            request.setAttribute("Gamestate",gameState);
+            response.sendRedirect(request.getContextPath()+"/jack/start");
+        }else{
+            request.setAttribute("Gamestate",gameState);
+            response.sendRedirect(request.getContextPath()+"/jack/start");
+        }
        
+//        request.setAttribute("Gamestate",gameState);
+//        response.sendRedirect(request.getContextPath()+"/jack/start");
     }
+       
+        
 //        try (PrintWriter out = response.getWriter()) {
 //            /* TODO output your page here. You may use following sample code. */
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet state</title>");            
+//            out.println("<title>Servlet won</title>");            
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet state at " + request.getContextPath() + "</h1>");
+//            out.println("<h1>Servlet won at " + request.getContextPath() + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
-//    }
-                
-                // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-                /**
-                 * Handles the HTTP <code>GET</code> method.
-                 *
-                 * @param request servlet request
-                 * @param response servlet response
-                 * @throws ServletException if a servlet-specific error occurs
-                 * @throws IOException if an I/O error occurs
-                 */
-  
+    
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -107,6 +124,5 @@ public class state extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 
 }

@@ -18,9 +18,10 @@
         
         <%--<jsp:useBean id="game" scope="session" class="nz.ac.massey.cs.webtech.s_18038659.server.Gamestate"/>--%>
         <% GameSession game = (GameSession)request.getAttribute("Gamestate");%>
-        <div>Welcome to Black Jack</div>
+        <div><h1>Welcome to Black Jack</h1></div>
 <!--        <p>Players turn: <%= game.getDeck().size()%></p>-->
-        <p>Player Cards</p>
+        <p><h2>Player Cards</h2></p>
+        <p><h3>Player score <%= game.getScorePlayerGame() %></h3></p>
         <%
         for (Card card : game.getPlayerCards()) {
         %>
@@ -32,7 +33,7 @@
       %>
       
       
-      <p>Dealer Cards</p>
+      <p><h2>Dealer Cards</h2></p>
         <%
         if (game.getIsPlayersTurn()) {
             List<Card> cardList = game.getDealerCards(); %>
@@ -41,6 +42,9 @@
         <%
             }else{
                 List<Card> cardList = game.getDealerCards();
+                %>
+                    <p><h3>Dealer score:<%=game.getScoreDealerGame()%></h3> </p>
+                <%
                 for (Card card : cardList) {
         %>
         <%--<%= card.getFaceName() %> <%= card.getSuit()%>--%>
@@ -54,15 +58,17 @@
          }
         %>
         
-    
-        <form action ="move/hit" method = "post">
-        <input type="submit" value="Hit">
+        <form action ="move/hit" method = "post" style=" position: relative">
+        <input type="submit" value="Hit" >
         </form>
-        <form action ="move/stand" method = "post">
+        <br>
+        <form action ="move/stand" method = "post" style="position: right">
          <input type="submit" value="stand">
         </form>
-    <!--</form>-->
-    
+        
+        <% if(game.getWinner()!= "Null"){ %>
+        <p>winner is <%= game.getWinner()  %></p>
+      <%  }%>
 
  </body>
 </html>

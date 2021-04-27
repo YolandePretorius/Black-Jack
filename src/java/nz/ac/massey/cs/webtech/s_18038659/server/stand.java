@@ -36,7 +36,11 @@ public class stand extends HttpServlet {
         
         
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
+        
+        if(session == null){
+            throw new ServletException("404 Not Found");
+        }
         
         Object obj = session.getAttribute("game");
         GameSession gameState = (GameSession)obj;
@@ -54,18 +58,21 @@ public class stand extends HttpServlet {
         gamelogic.setPlayerCards(gameState.getPlayerCards());
         gamelogic.setDealerCards(gameState.getDealerCards());
         //gameState.setScorePlayerGame(gamelogic.getTotalScore(gamelogic.getPlayerCards()));
-        gameState.setScoreDealerGame(gamelogic.getTotalDealerScore(gamelogic.getDealerCards()));
-        
-        while(gameState.getScoreDealerGame() < 17){
+//        gameState.setScoreDealerGame(gamelogic.getTotalDealerScore(gamelogic.getDealerCards()));
+
+
+        int totalDealerScore = gamelogic.getTotalDealerScore(gamelogic.getDealerCards());
+        while(totalDealerScore < 17){
             gamelogic.dealerGetCard();
-            gameState.setScoreDealerGame(gamelogic.getTotalDealerScore(gamelogic.getDealerCards()));
+             totalDealerScore = gamelogic.getTotalDealerScore(gamelogic.getDealerCards());
+            //gameState.setScoreDealerGame(gamelogic.getTotalDealerScore(gamelogic.getDealerCards()));
         }
-        
+        gameState.setScoreDealerGame(totalDealerScore);
         gameState.setDealerCards(gamelogic.getDealerCards());
         gameState.setDeck(gamelogic.getDeckOfCards());
         
         request.setAttribute("Gamestate",gameState);
-        response.sendRedirect(request.getContextPath()+"/jack/start");
+        response.sendRedirect(request.getContextPath()+"/jack/state");
         
         
 //        try (PrintWriter out = response.getWriter()) {

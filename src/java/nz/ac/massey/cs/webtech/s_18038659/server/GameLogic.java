@@ -74,15 +74,7 @@ public class GameLogic {
             }
    }
 
-    public boolean isPlayerWinner(int dealerScore,int playerScore) {
-        if((playerScore <= 21)&&(playerScore > dealerScore)){
-            return !playerWinner;
-        }
-        return playerWinner;
-    }
-    
-    
-    
+      
     public void setDeckOfCards(List<Card> sessionDeckOfCards){
         this.deckCards = sessionDeckOfCards;
     }
@@ -141,6 +133,7 @@ public class GameLogic {
      
     
     public int getTotalPlayerScore(List<Card>cards){
+        this.totalPlayerScore=0;
         for (Card playerCard : cards) {
             if(playerCard.getFaceValue() != 11){
                 this.totalPlayerScore = totalPlayerScore + playerCard.getFaceValue();
@@ -159,6 +152,7 @@ public class GameLogic {
     }
     
     public int getTotalDealerScore(List<Card>cards){
+        this.totalDealerScore = 0;
         for (Card dealerCard : cards) {
             if(dealerCard.getFaceValue() != 11){
                 this.totalDealerScore = totalDealerScore + dealerCard.getFaceValue();
@@ -176,7 +170,30 @@ public class GameLogic {
         return this.totalDealerScore; 
     }
 
-}
+    String getWinner(int dealerScore, int playerScore) {
+        if((playerScore <= 21)&&(playerScore > dealerScore)){
+            return "player";
+        }
+        
+        if((dealerScore <= 21)&&(dealerScore > playerScore)){
+            return "dealer";
+        }
+        
+        if((playerScore <= 21)&&(dealerScore > 21)){
+            return "player";
+        }
+        if((playerScore == 21)&&(dealerScore == 21)){
+            return "draw";
+        }
+        if((playerScore > 21)&&(dealerScore <= 21)){
+            return "dealer";
+        }
+        else{
+            return "draw";
+        }
+    }
+    
+}   
 
     
     
