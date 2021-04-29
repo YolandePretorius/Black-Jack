@@ -63,7 +63,11 @@
         </form>
         <br>
         <form action ="move/stand" method = "post" style="position: right">
-         <input type="submit" value="stand">
+         <input type="submit" value="Stand">
+        </form>
+         <br>
+        <form action ="/stats" method = "post" style="position: right">
+         <input type="submit" value="Stats">
         </form>
         
         <% if(game.getWinner()!= "Null"){ %>

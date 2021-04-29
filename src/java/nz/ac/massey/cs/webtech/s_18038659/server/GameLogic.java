@@ -171,6 +171,9 @@ public class GameLogic {
     }
 
     String getWinner(int dealerScore, int playerScore) {
+        if(playerScore > 21){
+            return "dealer";
+        }
         if((playerScore <= 21)&&(playerScore > dealerScore)){
             return "player";
         }

@@ -78,9 +78,11 @@ public class hit extends HttpServlet {
 //            gameState.setIsPlayersTurn(!gameState.isPlayersTurn);
 //        }
         
-        if(gameState.getScorePlayerGame() > 21){
-            throw new ServletException("PLAYER LOOSES,ITS A BUST");
-        }
+//        if(gameState.getScorePlayerGame() > 21){
+//            request.setAttribute("Gamestate",gameState);
+//            response.sendRedirect(request.getContextPath()+"/jack/won");
+//           // throw new ServletException("PLAYER LOOSES,ITS A BUST");
+//        }
         if (gameState.isPlayersTurn && gameState.getScorePlayerGame() < 21){
             gamelogic.playerGetsCard();
             gameState.setDeck(gamelogic.getDeckOfCards());
