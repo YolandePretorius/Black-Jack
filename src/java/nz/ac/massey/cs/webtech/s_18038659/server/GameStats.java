@@ -10,9 +10,23 @@ package nz.ac.massey.cs.webtech.s_18038659.server;
  * @author 18038659
  */
 public class GameStats {
+
     int numGamesPlayerWon = 0;
     int numGamesDealerWon = 0;
-    int userWinPersentage = 0;
+    float userWinPersentage = 0;
+    int totalGamesPlayed = 0;
+
+    public void setTotalGamesPlayed(int totalGamesPlayed) {
+        this.totalGamesPlayed = totalGamesPlayed;
+    }
+
+    public int getTotalGamesPlayed() {
+        return totalGamesPlayed;
+    }
+
+    void setTotalGamesPlayed() {
+        this.totalGamesPlayed++;
+    }
 
     public int getNumGamesPlayerWon() {
         return numGamesPlayerWon;
@@ -30,11 +44,11 @@ public class GameStats {
         this.numGamesDealerWon = numGamesDealerWon;
     }
 
-    public int getUserWinPersentage() {
+    public float getUserWinPersentage() {
         return userWinPersentage;
     }
 
-    public void setUserWinPersentage(int userWinPersentage) {
+    public void setUserWinPersentage(float userWinPersentage) {
         this.userWinPersentage = userWinPersentage;
     }
 
@@ -45,5 +59,5 @@ public class GameStats {
     void setNumGamesDealerWon() {
         this.numGamesDealerWon++;
     }
-    
+
 }

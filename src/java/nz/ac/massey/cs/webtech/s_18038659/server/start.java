@@ -21,16 +21,17 @@ import javax.servlet.http.HttpSession;
  * @author 18038659
  */
 public class start extends HttpServlet {
-    
+
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        
+
     }
-    
-    /** Destroys the servlet.
+
+    /**
+     * Destroys the servlet.
      */
     public void destroy() {
-        
+
     }
 
     /**
@@ -43,14 +44,13 @@ public class start extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        response.encodeURL("/jack/index.jsp");
         HttpSession session = request.getSession(false);
 //        GameSession gameState = new GameSession();
 
-        
-        if(session == null){
+        if (session == null) {
             GameSession gameState = new GameSession();
             session = request.getSession(true);
             gameState.setIsPlayersTurn(true);
@@ -63,38 +63,35 @@ public class start extends HttpServlet {
             gameState.setDealerCards(gamelogic.dealerCards);
             gameState.setNumberGamesPlayed(gamelogic.numberGamesPlayed);
             gameState.setScorePlayerGame(gamelogic.getTotalPlayerScore(gamelogic.getPlayerCards())); // score of players cards
-            
+
             session.setAttribute("game", gameState);
-           
+
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jack/index.jsp");
-            request.setAttribute("Gamestate",gameState);
+            request.setAttribute("Gamestate", gameState);
             dispatcher.include(request, response);
-            
-        }else{
-            
+
+        } else {
+
             Object obj = session.getAttribute("game");
-            GameSession gameState = (GameSession)obj;
-             request.setAttribute("Gamestate",gameState);
-             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jack/index.jsp");
-             dispatcher.include(request, response);
+            GameSession gameState = (GameSession) obj;
+            request.setAttribute("Gamestate", gameState);
+            
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jack/index.jsp");
+            dispatcher.include(request, response);
         }
 //        }else{
 //            
 //        }
 //        GameSession gameState = new GameSession();
-        
+
         //connect to index---------------------------------------------------------
 //        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
         //request.setAttribute("Gamestate",gameState);
         //response.sendRedirect(request.getContextPath()+"/jack/start");
-       // String uri = response.encodeURL("ShoppingCart2");
+        // String uri = response.encodeURL("ShoppingCart2");
 //        dispatcher.include(request, response);
         //----------------------------------------------------------------------------
-        
-        
-        
 //        response.sendRedirect("index.jsp");
-        
 //        request.setAttribute("Player Cards", gameState.getPlayerCards());
 //        
 //        if (gameState.isPlayersTurn) {
@@ -106,13 +103,11 @@ public class start extends HttpServlet {
 //                request.setAttribute("Dealer cards", gameState.getDealerCards());
 ////                 out.println("<h1>Dealer Cards "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
 //             }
-        
 //        response.sendRedirect("/")
 // 
 //        requestDispatcher.forward(request, response);
 //        session.setAttribute("card1", 2);
 //        session.setAttribute("card2", 44);
-
 //        try (PrintWriter out = response.getWriter()) {
 //            /* TODO output your page here. You may use following sample code. */
 //            out.println("<!DOCTYPE html>");
@@ -139,7 +134,6 @@ public class start extends HttpServlet {
 //             out.println();
 //            }
 //            out.println("Player card total: " +gameState.getScorePlayerGame());
-            
 //            for (Card card : gameState.Deck) {
 //                //out.println("<h1>Deck of card"+ card.getFaceName()+"</h1>");
 //                 out.println("<h1>Deck of card"+ card.getCardImage()+"</h1>");
@@ -178,8 +172,8 @@ public class start extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.sendRedirect("index.jsp");
-        
-    processRequest(request, response);
+
+        processRequest(request, response);
     }
 
     /**

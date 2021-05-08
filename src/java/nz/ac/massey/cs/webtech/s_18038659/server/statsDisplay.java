@@ -5,26 +5,30 @@
  */
 package nz.ac.massey.cs.webtech.s_18038659.server;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.Reader;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.beans.XMLEncoder;
+import java.beans.XMLDecoder;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpSession;
+
 /**
  *
  * @author 18038659
  */
-@WebServlet(name = "statsXML", urlPatterns = {"/jack/statsXML"})
-public class stats extends HttpServlet {
+@WebServlet(name = "statsDisplay", urlPatterns = {"/jack/statsDisplay"})
+public class statsDisplay extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,54 +41,30 @@ public class stats extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String xml2String = null;
-       // response.setContentType("text/html;charset=UTF-8");
-        response.setContentType(" application/xml;charset=UTF-8");
+        //response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+       // response.setHeader("Content-disposition", "attachment; filename=stats.xml");
+        //File csvOutputFile = new File("nz.ac.massey.cs.webtech.s_18038659.server/addresses.csv");
+        GameStats gameStatsNew = null;
+        try {
+            File sFileOut = new File("stats.xml");
+            if (sFileOut.exists()) {
+                FileInputStream fis = new FileInputStream(sFileOut);
+                XMLDecoder decoder = new XMLDecoder(fis);
 
-//        File sFileOut = new File("stats.xml");
-//
-//        if (sFileOut.exists()) {
-//            Reader fileReader = new FileReader(sFileOut);
-//            BufferedReader bufReader = new BufferedReader(fileReader);
-//            StringBuilder sb = new StringBuilder();
-//            String line = bufReader.readLine();
-//            while (line != null) {
-//                sb.append(line).append("\n");
-//                line = bufReader.readLine();
-//            }
-//            xml2String = sb.toString();
-//
-////Read more: https://javarevisited.blogspot.com/2015/07/how-to-read-xml-file-as-string-in-java-example.html#ixzz6uDqi7KAr
-//        }
+                // Create stats object that will keep track of wins and losses 
+                gameStatsNew = (GameStats) decoder.readObject();
+                decoder.close();
 
-        File sFileOut = new File("stats.xml");
-        if (sFileOut.exists()) {
-            OutputStream out = response.getOutputStream();
-            FileInputStream in = new FileInputStream("stats.xml");
-            byte[] buffer = new byte[4096];
-            int length;
-            while ((length = in.read(buffer)) > 0){
-                out.write(buffer, 0, length);
             }
-            in.close();
-            out.flush();
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
 
-        //try (PrintWriter out = response.getWriter()) {
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jack/stats.jsp");
+        request.setAttribute("GameStats", gameStatsNew);
+        dispatcher.include(request, response);
 
-            /* TODO output your page here. You may use following sample code. */
-            //out.print("hello");
-            //out.print(xml2String);
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet statsXML</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet statsXML at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-        //}
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

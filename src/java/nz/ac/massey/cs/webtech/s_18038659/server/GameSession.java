@@ -13,6 +13,7 @@ import java.util.List;
  * @author 18038659
  */
 public class GameSession {
+
     List<Card> playerCards = new ArrayList<>();
     List<Card> dealerCards = new ArrayList<>();
     boolean isPlayersTurn;
@@ -31,7 +32,7 @@ public class GameSession {
     public void setUrl(String url) {
         this.url = url;
     }
-    
+
     public int getScorePlayerGame() {
         return scorePlayerGame;
     }
@@ -91,18 +92,10 @@ public class GameSession {
     public void setWinner(String winner) {
         this.winner = winner;
     }
-    
-    
-    
-    
+
     @Override
     public String toString() {
         return "GameSession{" + "playerCards=" + playerCards + ", dealerCards=" + dealerCards + ", isPlayersTurn=" + isPlayersTurn + ", Deck=" + Deck + '}';
     }
 
-    
- 
-
-    
-    
 }

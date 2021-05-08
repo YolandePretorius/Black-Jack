@@ -37,8 +37,9 @@ public class state extends HttpServlet {
         
         HttpSession session = request.getSession(false);
         
-         if(session == null){
-            throw new ServletException("404 Not Found");
+         if (session == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
         }
         
         Object obj = session.getAttribute("game");

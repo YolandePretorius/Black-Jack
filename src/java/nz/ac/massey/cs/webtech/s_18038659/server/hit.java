@@ -21,16 +21,17 @@ import javax.servlet.http.HttpSession;
  * @author 18038659
  */
 public class hit extends HttpServlet {
-    
-        public void init(ServletConfig config) throws ServletException {
+
+    public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        
+
     }
-    
-    /** Destroys the servlet.
+
+    /**
+     * Destroys the servlet.
      */
     public void destroy() {
-        
+
     }
 
     /**
@@ -44,25 +45,26 @@ public class hit extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("text/html;charset=UTF-8");
-        
         HttpSession session = request.getSession(false);
-         
-        if(session == null){
-            throw new ServletException("404 Not Found");
+
+        if (session == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            
+            return;
         }
-         
+
         Object obj = session.getAttribute("game");
-        GameSession gameState = (GameSession)obj;
+        GameSession gameState = (GameSession) obj;
         //gameState.setIsPlayersTurn(!(gameState.isPlayersTurn));
-        
+
         GameLogic gamelogic = new GameLogic();
         gamelogic.setDeckOfCards(gameState.getDeck());
         gamelogic.setPlayerCards(gameState.getPlayerCards());
         gameState.setUrl("../");
         //gamelogic.setTotalPlayerScore(gamelogic.getTotalPlayerScore());
-        
+
 //        if(gameState.getScorePlayerGame() > 21){
 //            throw new ServletException("PLAYER LOOSES");  
 //        }else{
@@ -73,33 +75,37 @@ public class hit extends HttpServlet {
 //            
 //        }
 //        
-        
 //        if(gameState.getScorePlayerGame() == 21){
 //            gameState.setIsPlayersTurn(!gameState.isPlayersTurn);
 //        }
-        
 //        if(gameState.getScorePlayerGame() > 21){
 //            request.setAttribute("Gamestate",gameState);
 //            response.sendRedirect(request.getContextPath()+"/jack/won");
 //           // throw new ServletException("PLAYER LOOSES,ITS A BUST");
 //        }
-        if (gameState.isPlayersTurn && gameState.getScorePlayerGame() < 21){
+        if (gameState.isPlayersTurn && gameState.getScorePlayerGame() < 21) {
             gamelogic.playerGetsCard();
             gameState.setDeck(gamelogic.getDeckOfCards());
             gameState.setPlayerCards(gamelogic.getPlayerCards());
             gameState.setScorePlayerGame(gamelogic.getTotalPlayerScore(gamelogic.getPlayerCards())); // score of players cards 
+            request.setAttribute("Gamestate", gameState);
+            response.sendRedirect(request.getContextPath() + "/jack/start");
+        }else{
+            //request.setAttribute("Gamestate", gameState);
+            //response.sendRedirect(request.getContextPath() + "/jack/stand");
+            
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,"player busted");
+            
+            //response.sendRedirect(request.getContextPath() + "/jack/stand");
+            return;
         }
-     
-       
-       
-       
-        
+
         //RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
         //RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("");
-        request.setAttribute("Gamestate",gameState);
-        response.sendRedirect(request.getContextPath()+"/jack/start");
+//        request.setAttribute("Gamestate", gameState);
+//        response.sendRedirect(request.getContextPath() + "/jack/start");
         //dispatcher.include(request, response);
-        
+
 //        try (PrintWriter out = response.getWriter()) {
 //            /* TODO output your page here. You may use following sample code. */
 //            out.println("<!DOCTYPE html>");
@@ -124,13 +130,13 @@ public class hit extends HttpServlet {
 //                 out.println("<h1>Dealer Cards: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
 //                }
 //              }
-            //out.println("<h2>Cards " + session.getAttribute("card1") + "</h2>");
+        //out.println("<h2>Cards " + session.getAttribute("card1") + "</h2>");
 //            out.println("<h2>Card2 " + session.getAttribute("card2") + "</h2>");
 //            out.println("<h1>Player card total: " +gameState.getScorePlayerGame()+"</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
-   }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

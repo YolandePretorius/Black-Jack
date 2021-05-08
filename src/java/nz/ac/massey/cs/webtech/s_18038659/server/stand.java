@@ -33,18 +33,18 @@ public class stand extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
+
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession(false);
-        
-        if(session == null){
-            throw new ServletException("404 Not Found");
+
+        if (session == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
         }
-        
+
         Object obj = session.getAttribute("game");
-        GameSession gameState = (GameSession)obj;
-        
+        GameSession gameState = (GameSession) obj;
+
         gameState.setIsPlayersTurn(false); //change to computer to deal cards
 //        if(gameState.getScorePlayerGame() > 21){
 //            //throw new ServletException("PLAYER LOOSES,ITS A BUST");
@@ -54,53 +54,28 @@ public class stand extends HttpServlet {
 //        
 //        throw new ServletException("PLAYER LOOSES,ITS A BUST");
 //        }
-        
+
         gameState.setUrl("../");
-        
+
         GameLogic gamelogic = new GameLogic();
-        
+
         gamelogic.setDeckOfCards(gameState.getDeck());
         gamelogic.setPlayerCards(gameState.getPlayerCards());
         gamelogic.setDealerCards(gameState.getDealerCards());
-        //gameState.setScorePlayerGame(gamelogic.getTotalScore(gamelogic.getPlayerCards()));
-//        gameState.setScoreDealerGame(gamelogic.getTotalDealerScore(gamelogic.getDealerCards()));
-
 
         int totalDealerScore = gamelogic.getTotalDealerScore(gamelogic.getDealerCards());
-        while(totalDealerScore < 17){
+        while (totalDealerScore < 17) {
             gamelogic.dealerGetCard();
-             totalDealerScore = gamelogic.getTotalDealerScore(gamelogic.getDealerCards());
+            totalDealerScore = gamelogic.getTotalDealerScore(gamelogic.getDealerCards());
             //gameState.setScoreDealerGame(gamelogic.getTotalDealerScore(gamelogic.getDealerCards()));
         }
         gameState.setScoreDealerGame(totalDealerScore);
         gameState.setDealerCards(gamelogic.getDealerCards());
         gameState.setDeck(gamelogic.getDeckOfCards());
-        
-        request.setAttribute("Gamestate",gameState);
-        response.sendRedirect(request.getContextPath()+"/jack/state");
-        
-        
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet stand</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            
-//            for (Card card : gameState.getPlayerCards()) {
-//                 out.println("<h1>Player Card: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
-//            }
-//
-//            for (Card card : gameState.getDealerCards()) {
-//                out.println("<h1>Dealer Cards: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
-//                }
-//            out.println("<h1>Player card total: " +gameState.getScorePlayerGame()+"</h1>");
-//            out.println("<h1>Dealer card total: " +gameState.getScoreDealerGame()+"</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
+
+        request.setAttribute("Gamestate", gameState);
+        response.sendRedirect(request.getContextPath() + "/jack/state");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

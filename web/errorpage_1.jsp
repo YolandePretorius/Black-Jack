@@ -12,7 +12,7 @@
         <title>Error Page</title>
     </head>
     <body>
-        
+        <p>player busted</p>
         <%= exception.getMessage() %>
     </body>
 </html>

@@ -17,45 +17,40 @@ import javax.imageio.ImageIO;
  * @author 18038659
  */
 public class Card {
-    private String faceName,suit;
+
+    private String faceName, suit;
     private int faceValue;
     private BufferedImage cardImage;
     public String cardURL;
     private String pictureName;
     //private Image image;
-    
-//    backofCard = new cardImage("./game/back-blue_.png");
 
+//    backofCard = new cardImage("./game/back-blue_.png");
 //    public void setPictureName(String pictureName) {
 //        this.pictureName = pictureName;
 //    }
- 
-    
     /**
-     * 
+     *
      * @param faceName = 2,3,4,5,6,7,8,9,10,Jack,Queen,King,Ace
      * @param suit "spades","clubs","diamonds","hearts"
      * @param faceValue = 2,3,4,5,6,7,8,9,10,11,12,13,14
-     * @param cardImage 
+     * @param cardImage
      *
      */
-    
     public Card() throws IOException {
 //        this.pictureName = ("../game/"+faceName+suit+".png");
 //        this.cardImage = ImageIO.read(new File(pictureName));
     }
-    
+
     public Card(String faceName, String suit, int faceValue, BufferedImage cardImageName) throws IOException {
-        
+
         this.faceName = faceName;
         this.suit = suit;
         this.faceValue = faceValue;
-        
-                        
-    /**
-     *
-     */
-        
+
+        /**
+         *
+         */
 //          cardImage = ImageIO.read(new File(pictureName));
 //        try{
 //            cardImage = ImageIO.read(new File(pictureName));
@@ -63,21 +58,17 @@ public class Card {
 //    
 //        }
         //this.cardImage = cardImage;
-       
         //cardImage = BufferedImage("./game/"+pictureName);
     }
-    
+
     /**
      * This method returns a list of face names that are valid
-     * @return 
+     *
+     * @return
      */
-    
-    public static List<String> getvalidFaceNames()
-    {
-        return Arrays.asList("2","3","4","5","6","7","8","9","10","jack","queen","king","ace");
+    public static List<String> getvalidFaceNames() {
+        return Arrays.asList("2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace");
     }
-
-    
 
     public String getFaceName() {
         return faceName;
@@ -86,8 +77,9 @@ public class Card {
     public void setFaceName(String faceName) {
         List<String> validFaceNames = getvalidFaceNames();
         faceName = faceName.toLowerCase();
-        if(validFaceNames.contains(faceName))
-                this.faceName = faceName;
+        if (validFaceNames.contains(faceName)) {
+            this.faceName = faceName;
+        }
     }
 
     public String getSuit() {
@@ -97,32 +89,27 @@ public class Card {
     public void setSuit(String suit) {
         this.suit = suit;
     }
-    
 
     public int getFaceValue() {
         return faceValue;
     }
-    
+
     public void setFaceValue(int faceValue) {
         this.faceValue = faceValue;
     }
-    
-    
 
 //    public BufferedImage getCardImage() throws IOException {
 //        this.pictureName = (faceName+suit+".png");
 //        this.cardImage = ImageIO.read(new File("./game/"+pictureName));
 //        return this.cardImage;
 //    }
-    
-    public void setCardURL(String url){
-        
+    public void setCardURL(String url) {
+
     }
 
     public String getCardURL(String url) {
-        this.pictureName = (faceName+suit+".png");
-        return this.cardURL =(url +"game/"+pictureName);
+        this.pictureName = (faceName + suit + ".png");
+        return this.cardURL = (url + "game/" + pictureName);
     }
 
-      
 }

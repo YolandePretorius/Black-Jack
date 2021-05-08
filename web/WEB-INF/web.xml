@@ -22,6 +22,11 @@
         </session-timeout>
     </session-config>
     <error-page>
-          <location>/errorpage.jsp</location>
+          <error-code>400</error-code>
+          <location>/errorpage_1.jsp</location>
     </error-page>
+<!--    <error-page>
+          <location>/errorpage.jsp</location>
+    </error-page>-->
+    
 </web-app>
