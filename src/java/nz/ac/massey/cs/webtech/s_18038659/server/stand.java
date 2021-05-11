@@ -8,6 +8,7 @@ package nz.ac.massey.cs.webtech.s_18038659.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -47,7 +48,9 @@ public class stand extends HttpServlet {
 
         gameState.setIsPlayersTurn(false); //change to computer to deal cards
 
-        // gameState.setUrl("../");
+
+       // gameState.setUrl("../../");
+
         GameLogic gamelogic = new GameLogic();
 
         gamelogic.setDeckOfCards(gameState.getDeck());
@@ -68,6 +71,9 @@ public class stand extends HttpServlet {
 
         request.setAttribute("Gamestate", gameState);
         response.sendRedirect(request.getContextPath() + "/jack/state");
+//        response.setStatus(HttpServletResponse.SC_OK);
+//        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jack/start");
+//        dispatcher.include(request, response);
 
     }
 

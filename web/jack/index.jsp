@@ -73,12 +73,13 @@
 <%
     if (!game.getIsPlayersTurn()) {%>
 <br> 
-<form action ="./statsDisplay" method = "post" style="position: right">
+<form action ="statsDisplay" method = "post" style="position: right">
     <input type="submit" value="Stats">
 </form>
 
 <% if (game.getWinner() != "Null") {%>
 <p>winner is <%= game.getWinner()%></p>
+
 
 <form action ="restart" method = "post" style="position: right">
     <input type="submit" value="Play again">

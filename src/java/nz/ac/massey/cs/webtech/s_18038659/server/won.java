@@ -40,8 +40,9 @@ public class won extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/xml;charset=UTF-8");
 
-        HttpSession session = request.getSession(false);
 
+        HttpSession session = request.getSession(false);
+        response.addHeader("session-ID", session.getId());
         if (session == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
