@@ -41,10 +41,9 @@ public class statsDisplay extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //response.setContentType("text/html;charset=UTF-8");
+
         response.setContentType("text/html;charset=UTF-8");
-       // response.setHeader("Content-disposition", "attachment; filename=stats.xml");
-        //File csvOutputFile = new File("nz.ac.massey.cs.webtech.s_18038659.server/addresses.csv");
+
         GameStats gameStatsNew = null;
         try {
             File sFileOut = new File("stats.xml");

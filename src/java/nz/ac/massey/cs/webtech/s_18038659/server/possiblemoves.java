@@ -21,8 +21,6 @@ import org.json.JSONObject;
  */
 @WebServlet(name = "possiblemoves", urlPatterns = {"/jack/possiblemoves"})
 public class possiblemoves extends HttpServlet {
-    
-    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,44 +34,25 @@ public class possiblemoves extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        
+
         Object obj = session.getAttribute("game");
         GameSession gameState = (GameSession) obj;
-       
-//        if (gameState.getIsPlayersTurn() == true){
-//            JSONObject json = new JSONObject();
-//            
-//            json.put("CanHit", gameState.getIsPlayersTurn());
-//            json.put("CanStand", gameState.getIsPlayersTurn());
-//            json.put("IsPlayersTurn", gameState.getIsPlayersTurn());
-//            
-//            out.print(json);
-//        }
-        
+
         try (PrintWriter out = response.getWriter()) {
             JSONObject json = new JSONObject();
-            
-            json.put("CanHit", gameState.getIsPlayersTurn());
-            json.put("CanStand", gameState.getIsPlayersTurn());
-            json.put("IsPlayersTurn", gameState.getIsPlayersTurn());
-            
+            PossibleMovesDto possibleMoves = gameState.getPossibleMovesDto();
+            json.put("CanHit", possibleMoves.isCanHit());
+            json.put("CanStand", possibleMoves.isCanStand());
+            json.put("IsPlayersTurn", possibleMoves.isIsPlayerTurn());
+
             out.print(json);
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet possiblemoves</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet possiblemoves at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
+
         }
     }
 

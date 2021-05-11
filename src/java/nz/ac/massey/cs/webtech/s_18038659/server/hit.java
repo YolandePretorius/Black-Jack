@@ -48,41 +48,22 @@ public class hit extends HttpServlet {
 
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession(false);
-
+        response.addHeader("session-ID", session.getId());
         if (session == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            
+
             return;
         }
 
         Object obj = session.getAttribute("game");
         GameSession gameState = (GameSession) obj;
         //gameState.setIsPlayersTurn(!(gameState.isPlayersTurn));
-
+        response.addHeader("session-ID", session.getId());
         GameLogic gamelogic = new GameLogic();
         gamelogic.setDeckOfCards(gameState.getDeck());
         gamelogic.setPlayerCards(gameState.getPlayerCards());
         gameState.setUrl("../");
-        //gamelogic.setTotalPlayerScore(gamelogic.getTotalPlayerScore());
 
-//        if(gameState.getScorePlayerGame() > 21){
-//            throw new ServletException("PLAYER LOOSES");  
-//        }else{
-//            gamelogic.playerGetsCard();
-//            gameState.setDeck(gamelogic.getDeckOfCards());
-//            gameState.setPlayerCards(gamelogic.getPlayerCards());
-//            gameState.setScorePlayerGame(gamelogic.getTotalPlayerScore(gamelogic.getPlayerCards())); // score of players cards
-//            
-//        }
-//        
-//        if(gameState.getScorePlayerGame() == 21){
-//            gameState.setIsPlayersTurn(!gameState.isPlayersTurn);
-//        }
-//        if(gameState.getScorePlayerGame() > 21){
-//            request.setAttribute("Gamestate",gameState);
-//            response.sendRedirect(request.getContextPath()+"/jack/won");
-//           // throw new ServletException("PLAYER LOOSES,ITS A BUST");
-//        }
         if (gameState.isPlayersTurn && gameState.getScorePlayerGame() < 21) {
             gamelogic.playerGetsCard();
             gameState.setDeck(gamelogic.getDeckOfCards());
@@ -90,52 +71,13 @@ public class hit extends HttpServlet {
             gameState.setScorePlayerGame(gamelogic.getTotalPlayerScore(gamelogic.getPlayerCards())); // score of players cards 
             request.setAttribute("Gamestate", gameState);
             response.sendRedirect(request.getContextPath() + "/jack/start");
-        }else{
-            //request.setAttribute("Gamestate", gameState);
-            //response.sendRedirect(request.getContextPath() + "/jack/stand");
-            
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,"player busted");
-            
-            //response.sendRedirect(request.getContextPath() + "/jack/stand");
+        } else {
+
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "player busted");
+
             return;
         }
 
-        //RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-        //RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("");
-//        request.setAttribute("Gamestate", gameState);
-//        response.sendRedirect(request.getContextPath() + "/jack/start");
-        //dispatcher.include(request, response);
-
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet hit</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-// 
-//            out.println("Game session player turn "+gameState.isPlayersTurn);
-//             for (Card card : gameState.getPlayerCards()) {
-//                 out.println("<h1>Player Card: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
-//            }
-//             
-//             if (gameState.isPlayersTurn) {
-//                List<Card> card = gameState.getDealerCards();
-//                out.println("<h1>Dealer Card: "+ card.get(0).getFaceName()+" "+ card.get(0).getSuit()+"</h1>");
-//                out.print("<h1>Dealer Card, back of card</h1>");
-//            } 
-//            else {
-//                for (Card card : gameState.getDealerCards()) {
-//                 out.println("<h1>Dealer Cards: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
-//                }
-//              }
-        //out.println("<h2>Cards " + session.getAttribute("card1") + "</h2>");
-//            out.println("<h2>Card2 " + session.getAttribute("card2") + "</h2>");
-//            out.println("<h1>Player card total: " +gameState.getScorePlayerGame()+"</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

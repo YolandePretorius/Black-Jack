@@ -8,6 +8,7 @@ package nz.ac.massey.cs.webtech.s_18038659.server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,8 +20,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author 18038659
  */
-@WebServlet(name = "stand", urlPatterns = {"/jack/move/stand"})
-public class stand extends HttpServlet {
+@WebServlet(name = "restart", urlPatterns = {"/jack/restart"})
+public class restart extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,39 +36,26 @@ public class stand extends HttpServlet {
             throws ServletException, IOException {
 
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession(false);
-        response.addHeader("session-ID", session.getId());
-        if (session == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
+        String url = response.encodeURL("/jack/index.jsp");
 
-        Object obj = session.getAttribute("game");
-        GameSession gameState = (GameSession) obj;
-
-        gameState.setIsPlayersTurn(false); //change to computer to deal cards
-
-        // gameState.setUrl("../");
+        GameSession gameState = new GameSession();
+        HttpSession session = request.getSession(true);
+        gameState.setIsPlayersTurn(true);
         GameLogic gamelogic = new GameLogic();
+        gameState.setUrl("../");
+        gamelogic.setInitialGameState(gameState);
 
-        gamelogic.setDeckOfCards(gameState.getDeck());
-        gamelogic.setPlayerCards(gameState.getPlayerCards());
-        gamelogic.setDealerCards(gameState.getDealerCards());
+        gameState.setDeck(gamelogic.deckCards);
+        gameState.setPlayerCards(gamelogic.playerCards);
+        gameState.setDealerCards(gamelogic.dealerCards);
+        gameState.setNumberGamesPlayed(gamelogic.numberGamesPlayed);
+        gameState.setScorePlayerGame(gamelogic.getTotalPlayerScore(gamelogic.getPlayerCards())); // score of players cards
 
-        int totalDealerScore = gamelogic.getTotalDealerScore(gamelogic.getDealerCards());
-        if (gameState.getScorePlayerGame() <= 21) {
-            while (totalDealerScore < 17) {
-                gamelogic.dealerGetCard();
-                totalDealerScore = gamelogic.getTotalDealerScore(gamelogic.getDealerCards());
+        session.setAttribute("game", gameState);
 
-            }
-        }
-        gameState.setScoreDealerGame(totalDealerScore);
-        gameState.setDealerCards(gamelogic.getDealerCards());
-        gameState.setDeck(gamelogic.getDeckOfCards());
-
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
         request.setAttribute("Gamestate", gameState);
-        response.sendRedirect(request.getContextPath() + "/jack/state");
+        dispatcher.include(request, response);
 
     }
 
