@@ -98,4 +98,36 @@ public class GameSession {
         return "GameSession{" + "playerCards=" + playerCards + ", dealerCards=" + dealerCards + ", isPlayersTurn=" + isPlayersTurn + ", Deck=" + Deck + '}';
     }
 
+    //new
+    public PossibleMovesDto getPossibleMovesDto()
+    {
+        PossibleMovesDto dto = new PossibleMovesDto();
+        dto.setIsPlayerTurn(this.isPlayersTurn);
+        dto.setCanStand(this.isPlayersTurn);
+        dto.setCanHit(this.isPlayersTurn && (this.getScorePlayerGame() < 21));
+        
+        return dto;
+    }
+    
+    public boolean canHit()
+    {
+        return this.isPlayersTurn && (this.getScorePlayerGame() < 21);
+    }
+    
+    public boolean canStand()
+    {
+        return this.isPlayersTurn;
+    }
+    
+    public String getStandLabel()
+    {
+        if (this.getScorePlayerGame() < 21)
+        {
+            return "Stand";
+        }
+        else
+        {
+            return "Dealer's turn";
+        }
+    }
 }

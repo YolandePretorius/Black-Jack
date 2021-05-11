@@ -5,30 +5,23 @@
  */
 package nz.ac.massey.cs.webtech.s_18038659.server;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import java.beans.XMLEncoder;
-import java.beans.XMLDecoder;
-import java.io.File;
-import java.io.IOException;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author 18038659
  */
-@WebServlet(name = "statsDisplay", urlPatterns = {"/jack/statsDisplay"})
-public class statsDisplay extends HttpServlet {
+@WebServlet(name = "restart", urlPatterns = {"/jack/restart"})
+public class restart extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,25 +36,25 @@ public class statsDisplay extends HttpServlet {
             throws ServletException, IOException {
 
         response.setContentType("text/html;charset=UTF-8");
+        String url = response.encodeURL("/jack/index.jsp");
 
-        GameStats gameStatsNew = null;
-        try {
-            File sFileOut = new File("stats.xml");
-            if (sFileOut.exists()) {
-                FileInputStream fis = new FileInputStream(sFileOut);
-                XMLDecoder decoder = new XMLDecoder(fis);
+        GameSession gameState = new GameSession();
+        HttpSession session = request.getSession(true);
+        gameState.setIsPlayersTurn(true);
+        GameLogic gamelogic = new GameLogic();
+        gameState.setUrl("../");
+        gamelogic.setInitialGameState(gameState);
 
-                // Create stats object that will keep track of wins and losses 
-                gameStatsNew = (GameStats) decoder.readObject();
-                decoder.close();
+        gameState.setDeck(gamelogic.deckCards);
+        gameState.setPlayerCards(gamelogic.playerCards);
+        gameState.setDealerCards(gamelogic.dealerCards);
+        gameState.setNumberGamesPlayed(gamelogic.numberGamesPlayed);
+        gameState.setScorePlayerGame(gamelogic.getTotalPlayerScore(gamelogic.getPlayerCards())); // score of players cards
 
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        session.setAttribute("game", gameState);
 
-        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jack/stats.jsp");
-        request.setAttribute("GameStats", gameStatsNew);
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
+        request.setAttribute("Gamestate", gameState);
         dispatcher.include(request, response);
 
     }

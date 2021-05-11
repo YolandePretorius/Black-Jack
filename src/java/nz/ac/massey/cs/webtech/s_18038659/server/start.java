@@ -46,7 +46,7 @@ public class start extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.encodeURL("/jack/index.jsp");
+        String url = response.encodeURL("/jack/index.jsp");
         HttpSession session = request.getSession(false);
 //        GameSession gameState = new GameSession();
 
@@ -66,7 +66,7 @@ public class start extends HttpServlet {
 
             session.setAttribute("game", gameState);
 
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jack/index.jsp");
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             request.setAttribute("Gamestate", gameState);
             dispatcher.include(request, response);
 
@@ -75,74 +75,11 @@ public class start extends HttpServlet {
             Object obj = session.getAttribute("game");
             GameSession gameState = (GameSession) obj;
             request.setAttribute("Gamestate", gameState);
-            
-            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/jack/index.jsp");
+            response.addHeader("session-ID", session.getId());
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.include(request, response);
         }
-//        }else{
-//            
-//        }
-//        GameSession gameState = new GameSession();
 
-        //connect to index---------------------------------------------------------
-//        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
-        //request.setAttribute("Gamestate",gameState);
-        //response.sendRedirect(request.getContextPath()+"/jack/start");
-        // String uri = response.encodeURL("ShoppingCart2");
-//        dispatcher.include(request, response);
-        //----------------------------------------------------------------------------
-//        response.sendRedirect("index.jsp");
-//        request.setAttribute("Player Cards", gameState.getPlayerCards());
-//        
-//        if (gameState.isPlayersTurn) {
-//                List<Card> card = gameState.getDealerCards();
-//                request.setAttribute("Dealer card", card.get(0));
-////                out.println("<h1>Dealer Card1: "+ card.get(0).getFaceName()+" "+ card.get(0).getSuit()+"</h1>");
-////                out.print("<h1>Dealer Card2, back of card<h1>");
-//            } else {
-//                request.setAttribute("Dealer cards", gameState.getDealerCards());
-////                 out.println("<h1>Dealer Cards "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
-//             }
-//        response.sendRedirect("/")
-// 
-//        requestDispatcher.forward(request, response);
-//        session.setAttribute("card1", 2);
-//        session.setAttribute("card2", 44);
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("Start");
-//            out.println("<title>Start</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//           //out.println("<h1>Servlet start at " + session.getId() + "</h1>");
-//            out.println("<h1>Start game</h1>");
-//            for (Card card : gameState.getPlayerCards()) {
-//                 out.println("<h1>Player Card: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
-////                 out.println("<h1>Player Card: "+ card.getCardURL()+"</h1>");
-//            }
-//            if (gameState.isPlayersTurn) {
-//                List<Card> card = gameState.getDealerCards();
-//                out.println("<h1>Dealer Card: "+ card.get(0).getFaceName()+" "+ card.get(0).getSuit()+"</h1>");
-//                out.print("<h1>Dealer Card, back of card<h1>");
-//            } else {
-//                for (Card card : gameState.getDealerCards()) {
-//                 out.println("<h1>Dealer Cards: "+ card.getFaceName()+" "+ card.getSuit()+"</h1>");
-//             }
-//             out.println();
-//            }
-//            out.println("Player card total: " +gameState.getScorePlayerGame());
-//            for (Card card : gameState.Deck) {
-//                //out.println("<h1>Deck of card"+ card.getFaceName()+"</h1>");
-//                 out.println("<h1>Deck of card"+ card.getCardImage()+"</h1>");
-//            }
-//           out.println("<h2>Card1 " + session.getAttribute("card1") + "</h2>");
-//           out.println("<h2>Card2 " + session.getAttribute("card2") + "</h2>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

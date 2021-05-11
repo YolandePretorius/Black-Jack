@@ -57,25 +57,32 @@
 <%
     }
 %>
-<%
-    if (game.getIsPlayersTurn()) {%>
+
+<% if (game.canHit()) {%>
+<br>
 <form action ="move/hit" method = "post" style=" position: relative">
     <input type="submit" value="Hit" >
 </form>
+<%}%>
+<% if (game.canStand()) {%>
 <br>
 <form action ="move/stand" method = "post" style="position: right">
-    <input type="submit" value="Stand">
+    <input type="submit" value="<%=game.getStandLabel()%> ">
 </form>
 <%}%>
 <%
     if (!game.getIsPlayersTurn()) {%>
 <br> 
-<form action ="./statsDisplay" method = "post" style="position: right">
+<form action ="../statsDisplay" method = "post" style="position: right">
     <input type="submit" value="Stats">
 </form>
 
 <% if (game.getWinner() != "Null") {%>
 <p>winner is <%= game.getWinner()%></p>
+
+<form action ="../restart" method = "post" style="position: right">
+    <input type="submit" value="Play again">
+</form>
 <%  }%>
 <%  }%>
 

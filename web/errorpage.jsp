@@ -12,7 +12,14 @@
         <title>Error Page</title>
     </head>
     <body>
-        
+        <%= response.getHeaderNames() %>
         <%= exception.getMessage() %>
+        <% if (response.getStatus() == 500) { %>
+                <%= exception.getMessage() %>
+        <% } else if (response.getStatus() == 400) { %>
+            400 loser...
+        <% } else { %>
+            http response: <%= response.getStatus() %>
+        <% } %>
     </body>
 </html>

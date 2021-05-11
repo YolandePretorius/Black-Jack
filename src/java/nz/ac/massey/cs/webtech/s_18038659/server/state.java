@@ -33,52 +33,36 @@ public class state extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        
+
         HttpSession session = request.getSession(false);
-        
-         if (session == null) {
+
+        if (session == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        
+
         Object obj = session.getAttribute("game");
-        GameSession gameState = (GameSession)obj;
-        
+        GameSession gameState = (GameSession) obj;
+
         int dealerscore = gameState.getScoreDealerGame();
         gameState.setScoreDealerGame(dealerscore);
         int playerscore = gameState.getScorePlayerGame();
         gameState.setScorePlayerGame(playerscore);
-        
-        
-        request.setAttribute("Gamestate",gameState);
-        response.sendRedirect(request.getContextPath()+"/jack/won");
-       
+        response.addHeader("session-ID", session.getId());
+        request.setAttribute("Gamestate", gameState);
+        response.sendRedirect(request.getContextPath() + "/jack/won");
+
     }
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet state</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet state at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
-//    }
-                
-                // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-                /**
-                 * Handles the HTTP <code>GET</code> method.
-                 *
-                 * @param request servlet request
-                 * @param response servlet response
-                 * @throws ServletException if a servlet-specific error occurs
-                 * @throws IOException if an I/O error occurs
-                 */
-  
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -108,6 +92,5 @@ public class state extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 
 }

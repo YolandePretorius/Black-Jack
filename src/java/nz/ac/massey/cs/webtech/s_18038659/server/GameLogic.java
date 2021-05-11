@@ -48,9 +48,6 @@ public class GameLogic {
                 newCard.setFaceName(cardFace.toString());
                 newCard.setSuit(cardSuit);
                 newCard.setFaceValue(cardFace);
-//                newCard.setPictureName(cardFace.toString()+ cardSuit+".png");
-                //newCard.setCardImage(cardFace.toString() + cardSuit + "png");
-
                 deckCards.add(newCard);
             }
 
@@ -61,7 +58,6 @@ public class GameLogic {
                 newCard.setFaceName(cardFace);
                 newCard.setSuit(cardSuit);
                 newCard.setFaceValue(10);
-                //newCard.setCardImage(./game/2c.png);
                 deckCards.add(newCard);
             }
 
