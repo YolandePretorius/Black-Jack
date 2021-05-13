@@ -21,7 +21,7 @@ public class GameSession {
     int numberGamesPlayed;
     int scorePlayerGame;
     int scoreDealerGame;
-    String winner;
+    String winner = "none";
 
     String url;
 

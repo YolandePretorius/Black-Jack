@@ -49,7 +49,7 @@ public class state extends HttpServlet {
         int playerscore = gameState.getScorePlayerGame();
         gameState.setScorePlayerGame(playerscore);
 
-        response.sendRedirect(request.getContextPath() + "/jack/won");
+        response.sendRedirect(request.getContextPath() + "/jack/wonDisplay");
 
     }
 

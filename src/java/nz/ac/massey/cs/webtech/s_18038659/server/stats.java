@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author 18038659
  */
-@WebServlet(name = "statsXML", urlPatterns = {"/jack/statsXML"})
+@WebServlet(name = "stats", urlPatterns = {"/jack/stats"})
 public class stats extends HttpServlet {
 
     /**

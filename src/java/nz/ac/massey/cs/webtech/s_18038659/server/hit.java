@@ -11,6 +11,7 @@ import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author 18038659
  */
+@WebServlet(name = "hit", urlPatterns = {"/jack/move/hit"})
 public class hit extends HttpServlet {
 
     public void init(ServletConfig config) throws ServletException {

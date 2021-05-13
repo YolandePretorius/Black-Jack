@@ -68,4 +68,12 @@
     nbproject/build-impl.xml file. 
 
     -->
+    <condition else="" property="endorsed.classpath.cmd.line.arg" value="--patch-module java.base='${toString:endorsed.classpath.path}'">
+            <and>
+                <isset property="endorsed.classpath"/>
+                <not>
+                    <equals arg1="${endorsed.classpath}" arg2="" trim="true"/>
+                </not>
+            </and>
+     </condition>
 </project>

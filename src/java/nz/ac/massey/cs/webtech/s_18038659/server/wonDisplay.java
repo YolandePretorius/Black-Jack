@@ -18,16 +18,14 @@ import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.PrintWriter;
 import javax.servlet.http.HttpSession;
-import org.json.JSONObject;
 
 /**
  *
  * @author 18038659
  */
-@WebServlet(name = "won", urlPatterns = {"/jack/won"})
-public class won extends HttpServlet {
+@WebServlet(name = "wonDisplay", urlPatterns = {"/jack/wonDisplay"})
+public class wonDisplay extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,20 +40,80 @@ public class won extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/xml;charset=UTF-8");
 
+
         HttpSession session = request.getSession(false);
+        response.addHeader("session-ID", session.getId());
         if (session == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-
         Object obj = session.getAttribute("game");
-
         GameSession gameState = (GameSession) obj;
 
-        try (PrintWriter out = response.getWriter()) {
-            out.print(gameState.winner);
+        int dealerScore = gameState.getScoreDealerGame();
+        int playerScore = gameState.getScorePlayerGame();
+
+        GameLogic gamelogic = new GameLogic();
+
+        if (gameState.isPlayersTurn) {
+            String winner = "none";
+            gameState.setWinner(winner);
+        } else {
+            String winner = gamelogic.getWinner(dealerScore, playerScore);
+            gameState.setWinner(winner);
         }
+
+        GameStats gameStatsNew = null;
+        try {
+            File sFileOut = new File("stats.xml");
+            if (sFileOut.exists()) {
+                FileInputStream fis = new FileInputStream(sFileOut);
+                XMLDecoder decoder = new XMLDecoder(fis);
+
+                // Create stats object that will keep track of wins and losses 
+                gameStatsNew = (GameStats) decoder.readObject();
+                decoder.close();
+            } else {
+                gameStatsNew = new GameStats();
+            }
+            if (gameState.getWinner() == "player") {
+                gameStatsNew.setNumGamesPlayerWon();
+            }
+            if (gameState.getWinner() == "dealer") {
+                gameStatsNew.setNumGamesDealerWon();
+            }
+            gameStatsNew.setTotalGamesPlayed();
+//                
+            float totalGamesPlayed = gameStatsNew.getTotalGamesPlayed();
+            float numGamesPlayerWon = gameStatsNew.getNumGamesPlayerWon();
+            gameStatsNew.setUserWinPersentage((numGamesPlayerWon / totalGamesPlayed) * 100);
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        //Store stats in xml file 
+        try {
+            File sFile = new File("stats.xml");
+            if (!sFile.exists()) {
+                sFile.createNewFile();
+            }
+            FileOutputStream statsFileOut = new FileOutputStream(sFile, false);
+            //FileOutputStream statsFileOut = new FileOutputStream(new File("./stats.xml"));
+            XMLEncoder encoder = new XMLEncoder(statsFileOut);
+            encoder.writeObject(gameStatsNew);
+            encoder.close();
+            statsFileOut.close();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        request.setAttribute("Gamestate", gameState);
+
+        response.sendRedirect(request.getContextPath() + "/jack/start");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

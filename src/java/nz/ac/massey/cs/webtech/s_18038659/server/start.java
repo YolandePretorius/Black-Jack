@@ -11,6 +11,7 @@ import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author 18038659
  */
+@WebServlet(name = "start", urlPatterns = {"/jack/start"})
 public class start extends HttpServlet {
 
     public void init(ServletConfig config) throws ServletException {
@@ -76,6 +78,7 @@ public class start extends HttpServlet {
             Object obj = session.getAttribute("game");
             GameSession gameState = (GameSession) obj;
             request.setAttribute("Gamestate", gameState);
+            
             response.addHeader("session-ID", session.getId());
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.include(request, response);
