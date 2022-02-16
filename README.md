@@ -1,4 +1,3 @@
-README
 The app is an implementation of Black Jack game.
 User can hit(add a extra card) or stand and this wait for the dealer to show his hand.
 Included in the file is a user guide with screen grabs indicating how
